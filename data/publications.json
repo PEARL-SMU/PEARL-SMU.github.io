@@ -1,0 +1,12 @@
+[
+  {
+    "title": "SimuMind: Benchmarking Mental Simulation in Large Language Models",
+    "authors": ["Elena Vasquez", "Priya Nair", "Marcus Chen"],
+    "venue": "NeurIPS 2024",
+    "year": 2024,
+    "tags": ["Evaluation", "LLMs"],
+    "highlight": true,
+    "abstract": "We introduce SimuMind, a benchmark of 12,000 items requiring mental simulation across physics, social reasoning, and spatial navigation.",
+    "links": { "pdf": "#", "code": "#", "demo": "#" }
+  }
+]

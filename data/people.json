@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Dr. Elena Vasquez",
+    "role": "Principal Investigator",
+    "photo": "https://i.pravatar.cc/300?img=47",
+    "bio": "Elena leads COGS Lab. She received her PhD from MIT and was a postdoctoral fellow at Stanford HAI.",
+    "links": { "website": "#", "scholar": "#", "twitter": "#", "email": "elena@example.edu" }
+  },
+  {
+    "name": "Marcus Chen",
+    "role": "PhD Student",
+    "photo": "https://i.pravatar.cc/300?img=68",
+    "bio": "Marcus studies emergent communication in multi-agent reinforcement learning. He is co-advised by the NLP group.",
+    "links": { "scholar": "#", "github": "#", "email": "marcus@example.edu" }
+  }
+]
