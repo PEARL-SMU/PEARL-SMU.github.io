@@ -220,6 +220,31 @@ transition: filter .3s;
 .person-name { font-weight: 500; font-size: .95rem; }
 .person-role { font-size: .78rem; color: var(--ink3); margin-top: .2rem; }
 
+/* Links directly on the person cards */
+.person-card-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.85rem;
+}
+.card-link {
+  font-size: 0.72rem;
+  font-family: var(--ff-mono);
+  color: var(--ink2);
+  text-decoration: none;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: all 0.2s var(--ease);
+}
+.card-link:hover {
+  background: var(--accent);
+  color: #fff; /* White text on hover for high contrast */
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
 /* Person modal */
 .modal-overlay {
 display: none; position: fixed; inset: 0; z-index: 200;
@@ -395,3 +420,59 @@ footer a { color: var(--ink3); text-decoration: underline; }
 /* ── Scroll fade-in animation ──────────────────────────── */
 .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
 .fade-in.visible { opacity: 1; transform: none; }
+
+/* ── Principal Investigator ────────────────────────────── */
+#pi { border-bottom: 1px solid var(--line); }
+.pi-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+  align-items: center;
+  background: var(--paper2);
+  padding: 2.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+@media (max-width: 768px) {
+  .pi-layout {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 1.5rem;
+  }
+}
+.pi-photo {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--paper);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.pi-name {
+  font-family: var(--ff-serif);
+  font-size: 2rem;
+  color: var(--ink);
+  margin-bottom: 0.25rem;
+}
+.pi-role {
+  font-family: var(--ff-mono);
+  font-size: 0.85rem;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.pi-bio {
+  font-size: 1.05rem;
+  color: var(--ink2);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+.pi-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+@media (max-width: 768px) {
+  .pi-links { justify-content: center; }
+}

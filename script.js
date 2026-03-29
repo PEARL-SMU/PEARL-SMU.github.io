@@ -45,56 +45,62 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="theme-text">${t.text}</div>
       </div>`).join('');
 
-    /* ── People ───────────────────────────────────────────── */
-    const ORDER = ['Principal Investigator','Postdoc','Research Engineer','PhD Student','Masters Student','Visiting Researcher','Alumni'];
+   /* ── Principal Investigator (Dedicated Section) ───────── */
+    const pi = d.people.find(p => p.role === 'Principal Investigator');
+    
+    if (pi) {
+      const linkLabels = { website:'🌐 Website', scholar:'📄 Scholar', twitter:'🐦 Twitter', github:'💻 GitHub', email:'✉️ Email' };
+      
+      $('pi-container').innerHTML = `
+        <div class="pi-layout fade-in">
+          <img class="pi-photo" src="${pi.photo}" alt="${pi.name}" loading="lazy" />
+          <div class="pi-info">
+            <h3 class="pi-name">${pi.name}</h3>
+            <div class="pi-role">${pi.role}</div>
+            <p class="pi-bio">${pi.bio}</p>
+            <div class="pi-links">
+              ${Object.entries(pi.links||{}).map(([k,v])=>`<a class="btn btn-outline" href="${v}" target="_blank">${linkLabels[k]||k}</a>`).join('')}
+            </div>
+          </div>
+        </div>`;
+    }
+
+    /* ── People (Rest of the Team) ────────────────────────── */
+    /* ── People (Rest of the Team) ────────────────────────── */
+    const ORDER = ['Postdoc','Research Engineer','PhD Student','Masters Student','Visiting Researcher','Alumni'];
     const groups = {};
-    d.people.forEach(p => { (groups[p.role] = groups[p.role]||[]).push(p); });
+    const linkLabels = { website:'🌐 Website', scholar:'📄 Scholar', twitter:'🐦 Twitter', github:'💻 GitHub', email:'✉️ Email' };
+    
+    // Filter out the PI so she doesn't appear twice
+    const teamMembers = d.people.filter(p => p.role !== 'Principal Investigator');
+    teamMembers.forEach(p => { (groups[p.role] = groups[p.role]||[]).push(p); });
 
     $('people-container').innerHTML = ORDER.filter(r => groups[r]).map(r => `
       <div class="people-group fade-in">
         <div class="people-group-label">${r}</div>
         <div class="people-grid">
-          ${groups[r].map((p, i) => `
-            <div class="person-card" data-person="${d.people.indexOf(p)}" tabindex="0" role="button" aria-label="View profile of ${p.name}">
+          ${groups[r].map((p, i) => {
+            const originalIndex = d.people.indexOf(p);
+            return `
+            <div class="person-card" data-person="${originalIndex}" tabindex="0" role="button" aria-label="View profile of ${p.name}">
               <img class="person-photo" src="${p.photo}" alt="${p.name}" loading="lazy" />
               <div class="person-info">
                 <div class="person-name">${p.name}</div>
                 <div class="person-role">${p.role}</div>
+                
+                <div class="person-card-links">
+                  ${Object.entries(p.links||{}).map(([k,v])=>`
+                    <a href="${v}" target="_blank" class="card-link" onclick="event.stopPropagation()">
+                      ${linkLabels[k]||k}
+                    </a>
+                  `).join('')}
+                </div>
+
               </div>
-            </div>`).join('')}
+            </div>`
+          }).join('')}
         </div>
       </div>`).join('');
-
-    /* modal */
-    const overlay = $('modal-overlay');
-    const modalContent = $('modal-content');
-    const openModal = idx => {
-      const p = d.people[idx];
-      const linkLabels = { website:'🌐 Website', scholar:'📄 Scholar', twitter:'🐦 Twitter', github:'💻 GitHub', email:'✉️ Email' };
-      modalContent.innerHTML = `
-        <div class="modal-header">
-          <img class="modal-photo" src="${p.photo}" alt="${p.name}" />
-          <div>
-            <div class="modal-name">${p.name}</div>
-            <div class="modal-role">${p.role}</div>
-          </div>
-        </div>
-        <div class="modal-bio">${p.bio}</div>
-        <div class="modal-links">
-          ${Object.entries(p.links||{}).map(([k,v])=>`<a class="modal-link" href="${v}" target="_blank">${linkLabels[k]||k}</a>`).join('')}
-        </div>`;
-      overlay.classList.add('open');
-    };
-    
-    document.querySelectorAll('.person-card').forEach(c => {
-      const open = () => openModal(+c.dataset.person);
-      c.addEventListener('click', open);
-      c.addEventListener('keydown', e => e.key === 'Enter' && open());
-    });
-    
-    $('modal-close').addEventListener('click', () => overlay.classList.remove('open'));
-    overlay.addEventListener('click', e => e.target === overlay && overlay.classList.remove('open'));
-    document.addEventListener('keydown', e => e.key === 'Escape' && overlay.classList.remove('open'));
 
     /* ── Publications ─────────────────────────────────────── */
     let activeFilter = 'All';
@@ -163,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <a href="mailto:${d.lab.email}">${d.lab.email}</a>`;
 
     /* ── Active nav highlight on scroll ──────────────────── */
-    const sections = ['home','people','publications','news'].map(id => $( id));
+    const sections = ['home','pi','people','publications','news'].map(id => $( id));
     const navLinks  = document.querySelectorAll('nav .nav-link');
     const onScroll  = () => {
       const mid = window.scrollY + window.innerHeight / 3;
