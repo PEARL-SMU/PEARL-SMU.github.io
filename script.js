@@ -22,6 +22,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const $ = id => document.getElementById(id);
     const fmt = iso => new Date(iso).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
     const PI_NAME = d.people.find(p => p.role === 'Principal Investigator')?.name || '';
+    
+    // Centralized link labels with FontAwesome icons
+    const linkLabels = { 
+      website: '<i class="fa-solid fa-globe"></i> Website', 
+      scholar: '<i class="fa-solid fa-graduation-cap"></i> Scholar', 
+      twitter: '<i class="fa-brands fa-x-twitter"></i> Twitter', 
+      github: '<i class="fa-brands fa-github"></i> GitHub', 
+      email: '<i class="fa-solid fa-envelope"></i> Email' 
+    };
 
     /* ── Nav brand ────────────────────────────────────────── */
     $('nav-lab-name').textContent = d.lab.name;
@@ -49,14 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pi = d.people.find(p => p.role === 'Principal Investigator');
 
     if (pi) {
-      const linkLabels = { 
-      website: '<i class="fa-solid fa-globe"></i> Website', 
-      scholar: '<i class="fa-solid fa-graduation-cap"></i> Scholar', 
-      twitter: '<i class="fa-brands fa-x-twitter"></i> Twitter', 
-      github: '<i class="fa-brands fa-github"></i> GitHub', 
-      email: '<i class="fa-solid fa-envelope"></i> Email' 
-    };
-
       $('pi-container').innerHTML = `
         <div class="pi-layout fade-in">
           <img class="pi-photo" src="${pi.photo}" alt="${pi.name}" loading="lazy" />
@@ -78,16 +79,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /* ── People (Rest of the Team) ────────────────────────── */
-    /* ── People (Rest of the Team) ────────────────────────── */
     const ORDER = ['Postdoc', 'PhD Student', 'Research Engineer', 'Masters Student', 'Visiting Researcher', 'Alumni'];
     const groups = {};
-    const linkLabels = { 
-      website: '<i class="fa-solid fa-globe"></i> Website', 
-      scholar: '<i class="fa-solid fa-graduation-cap"></i> Scholar', 
-      twitter: '<i class="fa-brands fa-x-twitter"></i> Twitter', 
-      github: '<i class="fa-brands fa-github"></i> GitHub', 
-      email: '<i class="fa-solid fa-envelope"></i> Email' 
-    };
 
     // Filter out the PI so she doesn't appear twice
     const teamMembers = d.people.filter(p => p.role !== 'Principal Investigator');
@@ -98,8 +91,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="people-group-label">${r}</div>
         <div class="people-grid">
           ${groups[r].map((p, i) => {
-      const originalIndex = d.people.indexOf(p);
-      return `
+            const originalIndex = d.people.indexOf(p);
+            return `
             <div class="person-card" data-person="${originalIndex}" tabindex="0" role="button" aria-label="View profile of ${p.name}">
               <img class="person-photo" src="${p.photo}" alt="${p.name}" loading="lazy" />
               <div class="person-info">
@@ -119,9 +112,56 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               </div>
             </div>`
-    }).join('')}
+          }).join('')}
         </div>
       </div>`).join('');
+
+    /* ── Person Modal (With Event Delegation) ─────────────── */
+    const overlay = $('modal-overlay');
+    const modalContent = $('modal-content');
+    
+    const openModal = idx => {
+      const p = d.people[idx];
+      
+      modalContent.innerHTML = `
+        <div class="modal-header">
+          <img class="modal-photo" src="${p.photo}" alt="${p.name}" />
+          <div>
+            <div class="modal-name">${p.name}</div>
+            <div class="modal-role">${p.role}</div>
+          </div>
+        </div>
+        <div class="modal-bio">${p.bio}</div>
+        <div class="modal-links">
+          ${Object.entries(p.links||{}).map(([k,v]) => `
+            <a class="modal-link" 
+               href="${k === 'email' ? 'mailto:' + v : v}" 
+               ${k === 'email' ? '' : 'target="_blank"'} >
+              ${linkLabels[k]||k}
+            </a>
+          `).join('')}
+        </div>`;
+      overlay.classList.add('open');
+    };
+
+    // Listen on the main container instead of individual cards
+    $('people-container').addEventListener('click', e => {
+      const card = e.target.closest('.person-card');
+      if (card) openModal(+card.dataset.person);
+    });
+
+    // Keyboard accessibility for the cards
+    $('people-container').addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        const card = e.target.closest('.person-card');
+        if (card) openModal(+card.dataset.person);
+      }
+    });
+    
+    // Close button and overlay click logic
+    $('modal-close').addEventListener('click', () => overlay.classList.remove('open'));
+    overlay.addEventListener('click', e => e.target === overlay && overlay.classList.remove('open'));
+    document.addEventListener('keydown', e => e.key === 'Escape' && overlay.classList.remove('open'));
 
     /* ── Publications ─────────────────────────────────────── */
     let activeFilter = 'All';
