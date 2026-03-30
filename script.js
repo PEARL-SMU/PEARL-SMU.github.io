@@ -49,7 +49,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const pi = d.people.find(p => p.role === 'Principal Investigator');
 
     if (pi) {
-      const linkLabels = { website: '🌐 Website', scholar: '📄 Scholar', twitter: '🐦 Twitter', github: '💻 GitHub', email: '✉️ Email' };
+      const linkLabels = { 
+      website: '<i class="fa-solid fa-globe"></i> Website', 
+      scholar: '<i class="fa-solid fa-graduation-cap"></i> Scholar', 
+      twitter: '<i class="fa-brands fa-x-twitter"></i> Twitter', 
+      github: '<i class="fa-brands fa-github"></i> GitHub', 
+      email: '<i class="fa-solid fa-envelope"></i> Email' 
+    };
 
       $('pi-container').innerHTML = `
         <div class="pi-layout fade-in">
@@ -75,7 +81,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     /* ── People (Rest of the Team) ────────────────────────── */
     const ORDER = ['Postdoc', 'PhD Student', 'Research Engineer', 'Masters Student', 'Visiting Researcher', 'Alumni'];
     const groups = {};
-    const linkLabels = { website: '🌐 Website', scholar: '📄 Scholar', twitter: '🐦 Twitter', github: '💻 GitHub', email: '✉️ Email' };
+    const linkLabels = { 
+      website: '<i class="fa-solid fa-globe"></i> Website', 
+      scholar: '<i class="fa-solid fa-graduation-cap"></i> Scholar', 
+      twitter: '<i class="fa-brands fa-x-twitter"></i> Twitter', 
+      github: '<i class="fa-brands fa-github"></i> GitHub', 
+      email: '<i class="fa-solid fa-envelope"></i> Email' 
+    };
 
     // Filter out the PI so she doesn't appear twice
     const teamMembers = d.people.filter(p => p.role !== 'Principal Investigator');

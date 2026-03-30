@@ -237,6 +237,9 @@ transition: filter .3s;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.03);
   transition: all 0.2s var(--ease);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 .card-link:hover {
   background: var(--accent);
@@ -472,6 +475,11 @@ footer a { color: var(--ink3); text-decoration: underline; }
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+}
+.pi-links .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between the icon and text */
 }
 @media (max-width: 768px) {
   .pi-links { justify-content: center; }
