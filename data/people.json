@@ -1,46 +1,57 @@
 [
   {
-    "name": "Dr. Elena Vasquez",
+    "name": "Dr. Thivya Kandappu",
     "role": "Principal Investigator",
-    "photo": "https://i.pravatar.cc/300?img=47",
-    "bio": "Elena leads COGS Lab. She received her PhD from MIT and was a postdoctoral fellow at Stanford HAI.",
+    "photo": "images/people/thivya.avif",
+    "bio": "Thivya leads PEARL Lab. She received her PhD from University of New South Wales and currently an assistant professor at SMU.",
     "links": {
-      "website": "#",
+      "website": "https://www.thivyak.info/",
       "scholar": "https://scholar.google.com/citations?user=M3gdduIAAAAJ&hl=en",
-      "email": "elena@example.edu"
+      "email": "thivyak@smu.edu.sg"
     }
   },
   {
-    "name": "Marcus Chen",
+    "name": "Gevindu Ganganath",
     "role": "PhD Student",
-    "photo": "https://i.pravatar.cc/300?img=68",
-    "bio": "Marcus studies emergent communication in multi-agent reinforcement learning. He is co-advised by the NLP group.",
+    "photo": "images/people/gevindu.jpg",
+    "bio": "",
+    "links": {
+      "scholar": "https://scholar.google.com/citations?user=z5ruMPMAAAAJ&hl=en",
+      "github": "#",
+      "email": "gevindu.wk.2025@phdcs.smu.edu.sg"
+    }
+  },
+  {
+    "name": "Pasindu Bolonghege",
+    "role": "Research Engineer",
+    "photo": "images/people/pasindu.jpeg",
+    "bio": "",
+    "links": {
+      "scholar": "https://scholar.google.com/citations?user=AHoRgowAAAAJ&hl=en",
+      "github": "",
+      "email": "pasindub@smu.edu.sg"
+    }
+  },
+  {
+    "name": "Sithmini Ranasingha",
+    "role": "Research Engineer",
+    "photo": "images/people/sithmini.jpeg",
+    "bio": "",
     "links": {
       "scholar": "#",
       "github": "#",
-      "email": "marcus@example.edu"
+      "email": "sithminir@smu.edu.sg"
     }
   },
   {
-    "name": "Marcus Chen",
-    "role": "Postdoc",
-    "photo": "https://i.pravatar.cc/300?img=68",
-    "bio": "Marcus studies emergent communication in multi-agent reinforcement learning. He is co-advised by the NLP group.",
-    "links": {
-      "scholar": "https://scholar.google.com/citations?user=M3gdduIAAAAJ&hl=en",
-      "github": "https://github.com/GevinduGanganath",
-      "email": "marcus@example.edu"
-    }
-  },
-  {
-    "name": "Marcus Chen",
-    "role": "PhD Student",
-    "photo": "https://i.pravatar.cc/300?img=68",
-    "bio": "Marcus studies emergent communication in multi-agent reinforcement learning. He is co-advised by the NLP group.",
+    "name": "Nipuni Arachchige",
+    "role": "Alumni",
+    "photo": "images/people/nipuni.jpg",
+    "bio": "",
     "links": {
       "scholar": "#",
       "github": "#",
-      "email": "marcus@example.edu"
+      "email": "sithminir@smu.edu.sg"
     }
   }
 ]
