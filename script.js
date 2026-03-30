@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── helpers ─────────────────────────────────────────── */
     const $ = id => document.getElementById(id);
-    const fmt = iso => new Date(iso).toLocaleDateString('en-GB', { year:'numeric', month:'short', day:'numeric' });
+    const fmt = iso => new Date(iso).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
     const PI_NAME = d.people.find(p => p.role === 'Principal Investigator')?.name || '';
 
     /* ── Nav brand ────────────────────────────────────────── */
@@ -45,12 +45,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="theme-text">${t.text}</div>
       </div>`).join('');
 
-   /* ── Principal Investigator (Dedicated Section) ───────── */
+    /* ── Principal Investigator (Dedicated Section) ───────── */
     const pi = d.people.find(p => p.role === 'Principal Investigator');
-    
+
     if (pi) {
-      const linkLabels = { website:'🌐 Website', scholar:'📄 Scholar', twitter:'🐦 Twitter', github:'💻 GitHub', email:'✉️ Email' };
-      
+      const linkLabels = { website: '🌐 Website', scholar: '📄 Scholar', twitter: '🐦 Twitter', github: '💻 GitHub', email: '✉️ Email' };
+
       $('pi-container').innerHTML = `
         <div class="pi-layout fade-in">
           <img class="pi-photo" src="${pi.photo}" alt="${pi.name}" loading="lazy" />
@@ -59,7 +59,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="pi-role">${pi.role}</div>
             <p class="pi-bio">${pi.bio}</p>
             <div class="pi-links">
-              ${Object.entries(pi.links||{}).map(([k,v])=>`<a class="btn btn-outline" href="${v}" target="_blank">${linkLabels[k]||k}</a>`).join('')}
+              ${Object.entries(pi.links || {}).map(([k, v]) => `
+                <a class="btn btn-outline" 
+                   href="${k === 'email' ? 'mailto:' + v : v}" 
+                   ${k === 'email' ? '' : 'target="_blank"'}>
+                  ${linkLabels[k] || k}
+                </a>
+              `).join('')}
             </div>
           </div>
         </div>`;
@@ -67,21 +73,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── People (Rest of the Team) ────────────────────────── */
     /* ── People (Rest of the Team) ────────────────────────── */
-    const ORDER = ['Postdoc','Research Engineer','PhD Student','Masters Student','Visiting Researcher','Alumni'];
+    const ORDER = ['Postdoc', 'Research Engineer', 'PhD Student', 'Masters Student', 'Visiting Researcher', 'Alumni'];
     const groups = {};
-    const linkLabels = { website:'🌐 Website', scholar:'📄 Scholar', twitter:'🐦 Twitter', github:'💻 GitHub', email:'✉️ Email' };
-    
+    const linkLabels = { website: '🌐 Website', scholar: '📄 Scholar', twitter: '🐦 Twitter', github: '💻 GitHub', email: '✉️ Email' };
+
     // Filter out the PI so she doesn't appear twice
     const teamMembers = d.people.filter(p => p.role !== 'Principal Investigator');
-    teamMembers.forEach(p => { (groups[p.role] = groups[p.role]||[]).push(p); });
+    teamMembers.forEach(p => { (groups[p.role] = groups[p.role] || []).push(p); });
 
     $('people-container').innerHTML = ORDER.filter(r => groups[r]).map(r => `
       <div class="people-group fade-in">
         <div class="people-group-label">${r}</div>
         <div class="people-grid">
           ${groups[r].map((p, i) => {
-            const originalIndex = d.people.indexOf(p);
-            return `
+      const originalIndex = d.people.indexOf(p);
+      return `
             <div class="person-card" data-person="${originalIndex}" tabindex="0" role="button" aria-label="View profile of ${p.name}">
               <img class="person-photo" src="${p.photo}" alt="${p.name}" loading="lazy" />
               <div class="person-info">
@@ -89,8 +95,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="person-role">${p.role}</div>
                 
                 <div class="person-card-links">
-                  ${Object.entries(p.links||{}).map(([k,v])=>`
-                    <a href="${v}" target="_blank" class="card-link" onclick="event.stopPropagation()">
+                  ${Object.entries(p.links||{}).map(([k,v]) => `
+                    <a href="${k === 'email' ? 'mailto:' + v : v}" 
+                       ${k === 'email' ? '' : 'target="_blank"'} 
+                       class="card-link" 
+                       onclick="event.stopPropagation()">
                       ${linkLabels[k]||k}
                     </a>
                   `).join('')}
@@ -98,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               </div>
             </div>`
-          }).join('')}
+    }).join('')}
         </div>
       </div>`).join('');
 
@@ -108,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const renderFilters = () => {
       $('pub-filters').innerHTML = allTags.map(t => `
-        <button class="filter-btn ${t===activeFilter?'active':''}" data-tag="${t}">${t}</button>`).join('');
+        <button class="filter-btn ${t === activeFilter ? 'active' : ''}" data-tag="${t}">${t}</button>`).join('');
       $('pub-filters').querySelectorAll('.filter-btn').forEach(b =>
         b.addEventListener('click', () => { activeFilter = b.dataset.tag; renderPubs(); renderFilters(); }));
     };
@@ -124,18 +133,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const renderPubs = () => {
       const pubs = activeFilter === 'All' ? d.publications : d.publications.filter(p => p.tags.includes(activeFilter));
       $('pub-list').innerHTML = pubs.map((p, i) => `
-        <div class="pub-card fade-in ${p.highlight?'featured':''}" data-pub="${i}">
+        <div class="pub-card fade-in ${p.highlight ? 'featured' : ''}" data-pub="${i}">
           <div class="pub-top">
             <div class="pub-title">${p.title}</div>
             ${p.highlight ? '<span class="pub-badge">Featured</span>' : ''}
           </div>
-          <div class="pub-authors">${p.authors.map(a=>a===PI_NAME?`<span class="self">${a}</span>`:a).join(', ')}</div>
+          <div class="pub-authors">${p.authors.map(a => a === PI_NAME ? `<span class="self">${a}</span>` : a).join(', ')}</div>
           <div class="pub-venue">${p.venue}</div>
-          <div class="pub-tags">${p.tags.map(t=>`<span class="pub-tag">${t}</span>`).join('')}</div>
+          <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
           <div class="pub-abstract">${p.abstract}</div>
           <button class="pub-toggle" data-pub="${i}">▸ Abstract</button>
           <div class="pub-links">
-            ${Object.entries(p.links||{}).map(([k,v])=>`<a class="pub-link" href="${v}" target="_blank">${k.toUpperCase()}</a>`).join('')}
+            ${Object.entries(p.links || {}).map(([k, v]) => `<a class="pub-link" href="${v}" target="_blank">${k.toUpperCase()}</a>`).join('')}
           </div>
         </div>`).join('');
 
@@ -169,9 +178,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       <a href="mailto:${d.lab.email}">${d.lab.email}</a>`;
 
     /* ── Active nav highlight on scroll ──────────────────── */
-    const sections = ['home','pi','people','publications','news'].map(id => $( id));
-    const navLinks  = document.querySelectorAll('nav .nav-link');
-    const onScroll  = () => {
+    const sections = ['home', 'pi', 'people', 'publications', 'news'].map(id => $(id));
+    const navLinks = document.querySelectorAll('nav .nav-link');
+    const onScroll = () => {
       const mid = window.scrollY + window.innerHeight / 3;
       sections.forEach((s, i) => {
         if (!s) return;
@@ -183,7 +192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     onScroll();
 
     observeFadeIns();
-    
+
   } catch (error) {
     console.error("Failed to load lab data. Are you running a local server?", error);
   }
