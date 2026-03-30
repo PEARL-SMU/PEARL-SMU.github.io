@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── People (Rest of the Team) ────────────────────────── */
     /* ── People (Rest of the Team) ────────────────────────── */
-    const ORDER = ['Postdoc', 'Research Engineer', 'PhD Student', 'Masters Student', 'Visiting Researcher', 'Alumni'];
+    const ORDER = ['Postdoc', 'PhD Student', 'Research Engineer', 'Masters Student', 'Visiting Researcher', 'Alumni'];
     const groups = {};
     const linkLabels = { website: '🌐 Website', scholar: '📄 Scholar', twitter: '🐦 Twitter', github: '💻 GitHub', email: '✉️ Email' };
 
@@ -95,12 +95,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="person-role">${p.role}</div>
                 
                 <div class="person-card-links">
-                  ${Object.entries(p.links||{}).map(([k,v]) => `
+                  ${Object.entries(p.links || {}).map(([k, v]) => `
                     <a href="${k === 'email' ? 'mailto:' + v : v}" 
                        ${k === 'email' ? '' : 'target="_blank"'} 
                        class="card-link" 
                        onclick="event.stopPropagation()">
-                      ${linkLabels[k]||k}
+                      ${linkLabels[k] || k}
                     </a>
                   `).join('')}
                 </div>
