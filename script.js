@@ -20,16 +20,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── helpers ─────────────────────────────────────────── */
     const $ = id => document.getElementById(id);
-    const fmt = iso => new Date(iso).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+    const fmt = iso => {
+      if (!iso) return '';
+      // If the date is just a 4-digit year, return the year directly
+      if (String(iso).trim().length === 4) return iso;
+      return new Date(iso).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+    };
     const PI_NAME = d.people.find(p => p.role === 'Principal Investigator')?.name || '';
-    
+
     // Centralized link labels with FontAwesome icons
-    const linkLabels = { 
-      website: '<i class="fa-solid fa-globe"></i> Website', 
-      scholar: '<i class="fa-solid fa-graduation-cap"></i> Scholar', 
-      twitter: '<i class="fa-brands fa-x-twitter"></i> Twitter', 
-      github: '<i class="fa-brands fa-github"></i> GitHub', 
-      email: '<i class="fa-solid fa-envelope"></i> Email' 
+    const linkLabels = {
+      website: '<i class="fa-solid fa-globe"></i> Website',
+      scholar: '<i class="fa-solid fa-graduation-cap"></i> Scholar',
+      twitter: '<i class="fa-brands fa-x-twitter"></i> Twitter',
+      github: '<i class="fa-brands fa-github"></i> GitHub',
+      email: '<i class="fa-solid fa-envelope"></i> Email'
     };
 
     /* ── Nav brand ────────────────────────────────────────── */
@@ -91,8 +96,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="people-group-label">${r}</div>
         <div class="people-grid">
           ${groups[r].map((p, i) => {
-            const originalIndex = d.people.indexOf(p);
-            return `
+      const originalIndex = d.people.indexOf(p);
+      return `
             <div class="person-card" data-person="${originalIndex}" tabindex="0" role="button" aria-label="View profile of ${p.name}">
               <img class="person-photo" src="${p.photo}" alt="${p.name}" loading="lazy" />
               <div class="person-info">
@@ -112,17 +117,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
               </div>
             </div>`
-          }).join('')}
+    }).join('')}
         </div>
       </div>`).join('');
 
     /* ── Person Modal (With Event Delegation) ─────────────── */
     const overlay = $('modal-overlay');
     const modalContent = $('modal-content');
-    
+
     const openModal = idx => {
       const p = d.people[idx];
-      
+
       modalContent.innerHTML = `
         <div class="modal-header">
           <img class="modal-photo" src="${p.photo}" alt="${p.name}" />
@@ -133,11 +138,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
         <div class="modal-bio">${p.bio}</div>
         <div class="modal-links">
-          ${Object.entries(p.links||{}).map(([k,v]) => `
+          ${Object.entries(p.links || {}).map(([k, v]) => `
             <a class="modal-link" 
                href="${k === 'email' ? 'mailto:' + v : v}" 
                ${k === 'email' ? '' : 'target="_blank"'} >
-              ${linkLabels[k]||k}
+              ${linkLabels[k] || k}
             </a>
           `).join('')}
         </div>`;
@@ -157,7 +162,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (card) openModal(+card.dataset.person);
       }
     });
-    
+
     // Close button and overlay click logic
     $('modal-close').addEventListener('click', () => overlay.classList.remove('open'));
     overlay.addEventListener('click', e => e.target === overlay && overlay.classList.remove('open'));
@@ -186,18 +191,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       const pubs = activeFilter === 'All' ? d.publications : d.publications.filter(p => p.tags.includes(activeFilter));
       $('pub-list').innerHTML = pubs.map((p, i) => `
         <div class="pub-card fade-in ${p.highlight ? 'featured' : ''}" data-pub="${i}">
-          <div class="pub-top">
-            <div class="pub-title">${p.title}</div>
-            ${p.highlight ? '<span class="pub-badge">Featured</span>' : ''}
+          
+          ${/* New image wrapper */ p.image ? `
+          <div class="pub-image-wrapper">
+            <img src="${p.image}" alt="Thumbnail for ${p.title}" class="pub-image" loading="lazy" />
+          </div>` : ''}
+          
+          <div class="pub-info">
+            <div class="pub-top">
+              <div class="pub-title">${p.title}</div>
+              ${p.highlight ? '<span class="pub-badge">Featured</span>' : ''}
+            </div>
+            <div class="pub-authors">${p.authors.map(a => a === PI_NAME ? `<span class="self">${a}</span>` : a).join(', ')}</div>
+            <div class="pub-venue">${p.venue}</div>
+            <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
+            <div class="pub-abstract">${p.abstract}</div>
+            <button class="pub-toggle" data-pub="${i}">▸ Abstract</button>
+            <div class="pub-links">
+              ${Object.entries(p.links || {}).map(([k, v]) => `<a class="pub-link" href="${v}" target="_blank">${k.toUpperCase()}</a>`).join('')}
+            </div>
           </div>
-          <div class="pub-authors">${p.authors.map(a => a === PI_NAME ? `<span class="self">${a}</span>` : a).join(', ')}</div>
-          <div class="pub-venue">${p.venue}</div>
-          <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
-          <div class="pub-abstract">${p.abstract}</div>
-          <button class="pub-toggle" data-pub="${i}">▸ Abstract</button>
-          <div class="pub-links">
-            ${Object.entries(p.links || {}).map(([k, v]) => `<a class="pub-link" href="${v}" target="_blank">${k.toUpperCase()}</a>`).join('')}
-          </div>
+
         </div>`).join('');
 
       $('pub-list').querySelectorAll('.pub-toggle').forEach(btn =>

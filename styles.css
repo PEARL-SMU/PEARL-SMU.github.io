@@ -309,16 +309,52 @@ transition: all .15s;
 }
 .filter-btn.active, .filter-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(192,80,42,.06); }
 .pub-list { display: flex; flex-direction: column; gap: 1.25rem; }
+/* ── Publications ──────────────────────────────────────── */
 .pub-card {
-padding: 1.5rem 1.75rem;
-background: var(--paper2);
-border: 1px solid var(--line);
-border-radius: var(--radius);
-border-left: 4px solid transparent;
-transition: border-color .2s, box-shadow .2s;
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  border-left: 4px solid transparent;
+  transition: border-color .2s, box-shadow .2s;
 }
+
 .pub-card:hover { border-left-color: var(--accent); box-shadow: 0 4px 16px rgba(0,0,0,.07); }
 .pub-card.featured { border-left-color: var(--gold); }
+
+/* New classes for the publication image */
+.pub-image-wrapper {
+  flex: 0 0 160px; /* Fixed width for the thumbnail */
+  display: flex;
+  align-items: flex-start;
+}
+
+.pub-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+.pub-info {
+  flex: 1;
+  min-width: 0; /* Prevents text from overflowing the flex container */
+}
+
+/* Make it responsive for mobile */
+@media (max-width: 650px) {
+  .pub-card {
+    flex-direction: column;
+  }
+  .pub-image-wrapper {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 250px;
+  }
+}
 .pub-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 .pub-title { font-weight: 500; font-size: 1rem; line-height: 1.45; }
 .pub-badge {
