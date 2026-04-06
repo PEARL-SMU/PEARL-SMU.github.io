@@ -3,7 +3,7 @@
     "name": "Dr. Thivya Kandappu",
     "role": "Principal Investigator",
     "photo": "images/people/thivya.avif",
-    "bio": "Thivya leads PEARL Lab. She received her PhD from University of New South Wales and currently an assistant professor at SMU.",
+    "bio": "Thivya leads PEARL Lab. She received her PhD from University of New South Wales.",
     "links": {
       "website": "https://www.thivyak.info/",
       "scholar": "https://scholar.google.com/citations?user=M3gdduIAAAAJ&hl=en",
@@ -51,7 +51,18 @@
     "links": {
       "scholar": "#",
       "github": "#",
-      "email": "sithminir@smu.edu.sg"
+      "email": "#"
+    }
+  },
+  {
+    "name": "Nuwan Sriyantha Bandara",
+    "role": "Alumni",
+    "photo": "images/people/nuwan.jpeg",
+    "bio": "",
+    "links": {
+      "scholar": "https://scholar.google.com/citations?user=7dp_868AAAAJ&hl=en#",
+      "github": "#",
+      "email": "#"
     }
   }
 ]

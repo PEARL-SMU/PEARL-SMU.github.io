@@ -1,8 +1,14 @@
 [
   {
     "date": "2026-03-02",
-    "category": "Paper Acceptance",
+    "category": "Paper",
     "title": "Our paper accepted at CHI 2026",
     "body": "We are thrilled to announce that our paper titled 'Motor-Mediated Creativity: Bridging Embodied Skill Training and Digital Expression' accpeted to be presented at CHI 2026."
+  },
+  {
+    "date": "2023",
+    "category": "Grant",
+    "title": "New Research Grant",
+    "body": "Understanding Temporal Dynamics of Core Cognitive Functions for Individualised Learning, Ministry of Education (MOE) Tier 1, PI (Project Level): Thivya KANDAPPU, 2023, S$123,755."
   }
 ]
