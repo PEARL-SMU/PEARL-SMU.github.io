@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <img class="pi-photo" src="${pi.photo}" alt="${pi.name}" loading="lazy" />
           <div class="pi-info">
             <h3 class="pi-name">${pi.name}</h3>
-            <div class="pi-role">${pi.role}</div>
+            <div class="pi-role">Assistant Professor of Computer Science, ResWORK Fellow</div>
             <p class="pi-bio">${pi.bio}</p>
             <div class="pi-links">
               ${Object.entries(pi.links || {}).map(([k, v]) => `
