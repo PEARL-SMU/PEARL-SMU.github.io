@@ -326,17 +326,21 @@ transition: all .15s;
 
 /* New classes for the publication image */
 .pub-image-wrapper {
-  flex: 0 0 160px; /* Fixed width for the thumbnail */
+  flex: 0 0 220px;       /* Increased from 160px to 220px */
   display: flex;
-  align-items: flex-start;
+  align-items: center;    /* Vertical centering */
+  justify-content: center; /* Horizontal centering */
+  padding: 0.5rem;        /* Optional: adds a little breathing room */
 }
 
 .pub-image {
   width: 100%;
+  max-width: 200px;       /* Limits the image size so it doesn't touch the edges */
   height: auto;
   border-radius: 4px;
-  object-fit: cover;
+  object-fit: contain;    /* Changed from 'cover' to 'contain' to avoid cropping */
   border: 1px solid var(--line);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Added a shadow for extra depth */
 }
 
 .pub-info {
@@ -348,11 +352,15 @@ transition: all .15s;
 @media (max-width: 650px) {
   .pub-card {
     flex-direction: column;
+    align-items: center; /* Centers the image and text blocks on mobile */
+    text-align: center;  /* Optional: centers text for a balanced mobile look */
   }
+  
   .pub-image-wrapper {
     flex: 0 0 auto;
     width: 100%;
-    max-width: 250px;
+    max-width: 280px;    /* Allow it to be even larger on mobile */
+    margin-bottom: 1rem;
   }
 }
 .pub-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
