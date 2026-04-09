@@ -4,10 +4,43 @@
     "authors": ["Pasindu Bolonghege", "Gevindu Ganganath", "Nipuni Arachchige", "Paul Benedict Lincoln", "Thivya Kandappu"],
     "venue": "CHI 2026",
     "year": 2026,
-    "tags": ["Motor-mediated creativity", "digital art", "corrective feedback", "ideation guide", "motor fluency", "structured guidance"],
+    "tags": ["Motor-mediated creativity", "Digital art", "Corrective feedback", "Ideation guide", "Motor fluency", "Structured guidance"],
     "highlight": true,
-    "image": "images/publications/chi26.png",
+    "image": "images/publications/chi26.jpg",
     "abstract": "Expressive digital drawing requires nuanced motor control, subtle variations in pressure, velocity, and rhythm that convey affect and style. While experts develop this embodied fluency through years of practice, novices struggle to produce marks that match their intentions, creating a gap between vision and execution. We propose motor-mediated creativity: treating motor training as integral to digital expression. Our system, Motus, instantiates this through structured practice of expressive primitives, expert-referenced feedback, and ideation prompts that encourage exploration. We report a two-stage investigation. A formative study characterized: (a) novice challenges in motor fluency, (b) examined how different feedback types, including corrective feedback, helped participants understand their mistakes, (c) how prompts, generic or embodied, support engagement with abstract expressive content. A controlled evaluation then linked fluency gains to subjective and expert ratings of expressiveness. Together, our findings show that scaffolding motor skills is a viable strategy for enhancing expressive agency in digital drawing.",
     "links": { "pdf": "#", "code": "#", "demo": "#" }
+  },
+  {
+    "title": "Toward Stateful Generative Environments from Structured Content",
+    "authors": ["Pasindu Bolonghege", "Thivya Kandappu"],
+    "venue": "AutoSys 2026",
+    "year": 2026,
+    "tags": ["Generative virtual reality", "Large language models", "Agentic systems"],
+    "highlight": true,
+    "image": "images/publications/autoSys26.jpg",
+    "abstract": "Interactive simulations are powerful tools for experiential and embodied learning, yet they remain largely handcrafted and domain-specific. Creating such systems typically requires manually translating conceptual knowledge into executable models, limiting scalability and reuse across domains. We argue that simulations should instead be compiled from conceptual content, automatically transforming text, diagrams, or structured explanations into parameterized, manipulable environments. This position paper proposes a research agenda for stateful generative environments that combine generative model synthesis with closed-loop adaptation. We introduce a domainagnostic abstraction that represents conceptual content as executable models consisting of objects, state variables, manipulable parameters, and dynamic update rules. These models can be compiled into interactive simulation environments, including XR settings, where users explore system behavior by manipulating parameters. Beyond one-shot generation, such environments can leverage multimodal sensing to infer user interaction states and adapt simulations to guide exploration. We outline the architectural foundations required to realize this vision and identify open challenges in structured content extraction, dynamic consistency, cross-domain generalization, and on-device adaptive inference. Treating interactive environments as compiled knowledge artifacts opens a new direction for generative, sensor-aware, and domain-agnostic simulation systems.",
+    "links": { "pdf": "#", "code": "#", "demo": "#" }
+  },
+  {
+    "title": "EyeGraph: Modularity-aware Spatio Temporal Graph Clustering for Continuous Event-based Eye Tracking",
+    "authors": ["Nuwan Sriyantha Bandara", "Thivya Kandappu", "Argha Sen", "Ila Gokarn", "Archan Misra"],
+    "venue": "NeurIPS 2024",
+    "year": 2024,
+    "tags": ["Event-based Eye Tracking", "Unsupervised Learning", "Variational Graph Autoencoder", "Pupil Localization"],
+    "highlight": false,
+    "image": null,
+    "abstract": "Continuous tracking of eye movement dynamics plays a significant role in developing a broad spectrum of human-centered applications, such as cognitive skills modeling, biometric user authentication, and foveated rendering. Recently neuromorphic cameras have garnered significant interest in the eye-tracking research community, owing to their sub-microsecond latency in capturing intensity changes resulting from eye movements. Nevertheless, the existing approaches for eventbased eye tracking suffer from several limitations: dependence on RGB frames, label sparsity, and training on datasets collected in controlled lab environments that do not adequately reflect real-world scenarios. To address these limitations, in this paper, we propose a dynamic graph-based approach that uses the event stream for high-fidelity tracking of pupillary movement. We first present EyeGraph, a large-scale, multi-modal near-eye tracking dataset collected using a wearable event camera attached to a head-mounted device from 40 participants – the dataset was curated while mimicking in-the-wild settings, with variations in user movement and ambient lighting conditions. Subsequently, to address the issue of label sparsity, we propose an unsupervised topology-aware spatio-temporal graph clustering approach as a benchmark. We show that our unsupervised approach achieves performance comparable to more onerous supervised approaches while consistently outperforming the conventional clustering-based unsupervised approaches.",
+    "links": { "pdf": "https://proceedings.neurips.cc/paper_files/paper/2024/file/d9d40ea135f064d9e49e0579e59ad773-Paper-Datasets_and_Benchmarks_Track.pdf", "code": "#", "demo": "#" }
+  },
+  {
+    "title": "EyeTrAES: Fine-grained, Low-Latency Eye Tracking via Adaptive Event Slicing",
+    "authors": ["Argha Sen", "Nuwan Sriyantha Bandara", "Ila Gokarn", "Thivya Kandappu", "Archan Misra"],
+    "venue": "ACM IMWUT 24",
+    "year": 2024,
+    "tags": ["Event-based Eye Tracking", "Event Cameras", " Adaptive Event Sampling", "Authentication"],
+    "highlight": false,
+    "image": "images/publications/IMWUT24.png",
+    "abstract": "Eye-tracking technology has gained significant attention in recent years due to its wide range of applications in human-computer interaction, virtual and augmented reality, and wearable health. Traditional RGB camera-based eye-tracking systems often struggle with poor temporal resolution and computational constraints, limiting their effectiveness in capturing rapid eye movements. To address these limitations, we propose EyeTrAES, a novel approach using neuromorphic event cameras for high-fidelity tracking of natural pupillary movement that shows significant kinematic variance. One of EyeTrAES's highlights is the use of a novel adaptive windowing/slicing algorithm that ensures just the right amount of descriptive asynchronous event data accumulation within an event frame, across a wide range of eye movement patterns. EyeTrAES then applies lightweight image processing functions over accumulated event frames from just a single eye to perform pupil segmentation and tracking (as opposed to gaze-based techniques that require simultaneous tracking of both eyes). We show that these two techniques boost pupil tracking fidelity by 6+%, achieving IoU~=92%, while incurring at least 3x lower latency than competing pure event-based eye tracking alternatives [38]. We additionally demonstrate that the microscopic pupillary motion captured by EyeTrAES exhibits distinctive variations across individuals and can thus serve as a biometric fingerprint. For robust user authentication, we train a lightweight per-user Random Forest classifier using a novel feature vector of short-term pupillary kinematics, comprising a sliding window of pupil (location, velocity, acceleration) triples. Experimental studies with two different datasets (capturing eye movement across a range of environmental contexts) demonstrate that the EyeTrAES-based authentication technique can simultaneously achieve high authentication accuracy (~=0.82) and low processing latency (~=12ms), and significantly outperform multiple state-of-the-art competitive baselines.",
+    "links": { "pdf": "https://dl.acm.org/doi/epdf/10.1145/3699745", "code": "#", "demo": "#" }
   }
 ]
