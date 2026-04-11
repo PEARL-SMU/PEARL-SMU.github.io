@@ -227,7 +227,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderPubs();
 
     /* ── News ─────────────────────────────────────────────── */
-    $('news-list').innerHTML = d.news.map(n => `
+    const sortedNews = d.news.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    $('news-list').innerHTML = sortedNews.map(n => `
       <div class="news-item fade-in">
         <div class="news-date-col">
           <div class="news-date">${fmt(n.date)}</div>
