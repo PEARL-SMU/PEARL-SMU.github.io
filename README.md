@@ -4,10 +4,10 @@ This repository contains the front-end source code for the lab's website. It is 
 
 ## 📁 Project Structure
 
-* `index.html`: The main page structure containing sections for Home, Leadership, Team, Publications, and News.
+* `index.html`: The main page structure containing sections for Home, Leadership, Team, Publications, Grants, and News.
 * `styles.css`: Contains the "PEARL Lab Dark Theme" styling, including responsive layouts, CSS variables for theming, and scroll animations.
 * `script.js`: The core logic that fetches data concurrently, populates the HTML dynamically, handles publication filtering, and triggers intersection observers for fade-in animations.
-* `data/`: This directory must contain the five JSON data files that power the site content: `lab.json`, `themes.json`, `people.json`, `publications.json`, and `news.json`.
+* `data/`: This directory must contain the six JSON data files that power the site content: `lab.json`, `themes.json`, `people.json`, `publications.json`, `grants.json`, and `news.json`.
 
 ## 🚀 Setup & Installation
 
@@ -22,7 +22,7 @@ Because this site uses the JavaScript `fetch()` API to load local JSON files, it
 
 ## 📝 Managing Content (JSON Data)
 
-All text, images, and links are managed via the JSON files in the `data/` directory. You do not need to touch the HTML or JavaScript to add new members, papers, or news.
+All text, images, and links are managed via the JSON files in the `data/` directory. You do not need to touch the HTML or JavaScript to add new members, papers, grants, or news.
 
 ### 1. The Team (`people.json`)
 The website automatically categorizes and orders team members based on their `role`.
@@ -41,7 +41,12 @@ The website automatically categorizes and orders team members based on their `ro
 * **Highlights:** Set `"highlight": true` on a publication to give it a "Featured" badge and a prominent gold border.
 * **Self-Highlighting:** If a string in the `authors` array exactly matches the Principal Investigator's name, that author's name will be automatically highlighted in the UI.
 
-### 3. News Updates (`news.json`)
+### 3. Grants (`grants.json`)
+This section displays the lab's current and past funding.
+* **Data Fields:** Each grant object displays the `title`, `amount`, `role` (e.g., PI, Co-PI), `funder`, and `period`.
+* **Optional Descriptions:** You can include an optional `description` string to provide a brief summary of the project. If omitted, the grant card will simply condense its layout to fit the available metadata.
+
+### 4. News Updates (`news.json`)
 News items are visually styled based on their category. You must use one of the following exact categories to trigger the correct background and text colors:
 * `Award` (Yellow)
 * `Paper` (Blue)
@@ -49,7 +54,7 @@ News items are visually styled based on their category. You must use one of the 
 * `Join` (Purple)
 * `Grant` (Red)
 
-### 4. Lab Info & Themes (`lab.json` & `themes.json`)
+### 5. Lab Info & Themes (`lab.json` & `themes.json`)
 * `lab.json`: Controls the site-wide metadata, the hero headline, contact info, and the top navigation bar name.
 * `themes.json`: Populates the grid of "Our Research" theme cards displayed in the hero section.
 

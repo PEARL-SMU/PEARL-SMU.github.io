@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     // Fetch all JSON data concurrently
-    const [labRes, themesRes, peopleRes, pubsRes, newsRes] = await Promise.all([
+    const [labRes, themesRes, peopleRes, pubsRes, grantsRes, newsRes] = await Promise.all([
       fetch('data/lab.json'),
       fetch('data/themes.json'),
       fetch('data/people.json'),
       fetch('data/publications.json'),
+      fetch('data/grants.json'), // <-- NEW
       fetch('data/news.json')
     ]);
 
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       themes: await themesRes.json(),
       people: await peopleRes.json(),
       publications: await pubsRes.json(),
+      grants: await grantsRes.json(), // <-- NEW
       news: await newsRes.json()
     };
 
@@ -226,6 +228,22 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderFilters();
     renderPubs();
 
+    /* ── Grants ────────────────────────────────────────────── */
+    $('grants-list').innerHTML = d.grants.map(g => `
+      <div class="grant-card fade-in">
+        <div class="grant-top">
+          <div class="grant-title">${g.title}</div>
+          <span class="grant-amount">${g.amount}</span>
+        </div>
+        <div class="grant-details">
+          <div class="grant-meta"><strong>Role:</strong> ${g.role}</div>
+          <div class="grant-meta"><strong>Funder:</strong> ${g.funder}</div>
+          <div class="grant-meta"><strong>Period:</strong> ${g.period}</div>
+        </div>
+        ${g.description ? `<div class="grant-desc">${g.description}</div>` : ''}
+      </div>`).join('');
+
+
     /* ── News ─────────────────────────────────────────────── */
     const sortedNews = d.news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -246,7 +264,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       <a href="mailto:${d.lab.email}">${d.lab.email}</a>`;
 
     /* ── Active nav highlight on scroll ──────────────────── */
-    const sections = ['home', 'pi', 'people', 'publications', 'news'].map(id => $(id));
+
+    const sections = ['home', 'pi', 'people', 'publications', 'grants', 'news'].map(id => $(id));
     const navLinks = document.querySelectorAll('nav .nav-link');
     const onScroll = () => {
       const mid = window.scrollY + window.innerHeight / 3;
