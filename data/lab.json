@@ -1,12 +1,12 @@
 {
-  "name": "PEARL Lab",
-  "fullName": "PErceptual and Adaptive Learning",
+  "name": "PEARL",
+  "fullName": "Perceptual Embodied and Adaptive leaRning Lab",
   "tagline": "Understanding minds, building intelligent systems.",
-  "description": "We study the intersection of cognitive science, machine learning, and human-computer interaction. Our research spans multi-agent reasoning, virtual reality and the design of AI systems that collaborate meaningfully with people.",
+  "description": "We study the intersection of machine learning, cognitive & physiological sciences and human-computer interaction. Our research spans multi-agent systems, virtual reality and the design of AI systems, that collaborate meaningfully with people.",
   "affiliation": "School of Computing and Information Systems, Singapore Management University",
   "location": "Singapore",
   "email": "pearllab.smu@gmail.com",
-  "twitter": "https://twitter.com",
-  "github": "https://github.com",
+  "twitter": "#",
+  "github": "#",
   "founded": "2026"
 }

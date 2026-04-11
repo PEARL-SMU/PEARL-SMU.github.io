@@ -1,6 +1,22 @@
 [
-  { "icon": "◉", "title": "Multi-Agent Systems", "text": "Designing agents that communicate, negotiate, and cooperate in complex environments." },
-  { "icon": "◇", "title": "Human-AI Collaboration", "text": "Building tools that augment human decision-making rather than replace it." },
-  { "icon": "◈", "title": "Virtual Reality", "text": "Exloring educational content in an immersive environment." },
-  { "icon": "◎", "title": "Cognitive Evaluation", "text": "Developing robust benchmarks grounded in cognitive science to assess AI behaviour." }
+  {
+    "icon": "◇",
+    "title": "Human-AI Collaboration",
+    "text": "Building tools that augment human decision-making rather than replace it."
+  },
+  {
+    "icon": "◉",
+    "title": "Multi-Agent Systems",
+    "text": "Designing agents that communicate, negotiate, and cooperate in complex human-centric environments."
+  },
+  {
+    "icon": "◈",
+    "title": "Virtual Reality",
+    "text": "Exloring educational content in an immersive environment."
+  },
+  {
+    "icon": "◎",
+    "title": "Cognitive Evaluation",
+    "text": "Developing robust benchmarks grounded in cognitive science to assess AI behaviour."
+  }
 ]
