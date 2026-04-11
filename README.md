@@ -1,4 +1,4 @@
-# PEARL Lab Website Documentation
+# PEARL Website Documentation
 
 This repository contains the front-end source code for the lab's website. It is a lightweight, static, single-page application built with plain HTML, CSS, and JavaScript that dynamically loads all of its content from JSON files.
 
