@@ -14,7 +14,7 @@
     "name": "Gevindu Ganganath",
     "role": "PhD Student",
     "photo": "images/people/gevindu.jpg",
-    "bio": "",
+    "bio": "I am a doctoral researcher specializing in Human-Computer Interaction and AI. My work in Educational AI focuses on developing LLM-powered tutoring agents that foster student engagement. By combining multimodal sensing like EEG and eye-tracking with adaptive pedagogical strategies, I aim to create intelligent systems that respond dynamically to a learner's cognitive and emotional states.",
     "links": {
       "scholar": "https://scholar.google.com/citations?user=z5ruMPMAAAAJ&hl=en",
       "github": "#",
@@ -63,6 +63,17 @@
       "scholar": "https://scholar.google.com/citations?user=7dp_868AAAAJ&hl=en#",
       "github": "#",
       "email": "#"
+    }
+  },
+  {
+    "name": "Yiming Zhang",
+    "role": "Postdoc",
+    "photo": "images/people/yiming.jpeg",
+    "bio": "Yiming Zhang is a Research Scientist specializing in Wearable/Mobile Health, AIOT and Health Informatics. Expertise spans large-scale clinical data acquisition, biomedical data analysis, interpretable/personalized AI/ML, edge deployment, and wearable device prototyping.",
+    "links": {
+      "scholar": "https://scholar.google.com.hk/citations?user=-_-2jZwAAAAJ&hl=zh-CN",
+      "github": "#",
+      "email": "yimingzhang@smu.edu.sg"
     }
   }
 ]
