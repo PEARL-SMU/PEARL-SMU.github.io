@@ -2,6 +2,7 @@
   {
     "name": "Dr. Thivya Kandappu",
     "role": "Principal Investigator",
+    "isAlumni": false,
     "photo": "images/people/thivya.avif",
     "bio": "Thivya leads PEARL Lab. She received her PhD from University of New South Wales. Her expertise lies at the intersection of pervasive computing, privacy-preserving mobile sensing, and human-centered analytics. Her interdisciplinary research bridges methodological innovation with real-world applications, making significant contributions to smart city systems, wearable technologies, and cognitive health. Her current focus areas include event-based vision, context-aware systems for aging, and technology-enhanced learning for individualized cognitive assessment.",
     "links": {
@@ -13,6 +14,7 @@
   {
     "name": "Gevindu Ganganath",
     "role": "PhD Student",
+    "isAlumni": false,
     "photo": "images/people/gevindu.jpg",
     "bio": "I am a doctoral researcher specializing in Human-Computer Interaction and AI. My work in Educational AI focuses on developing LLM-powered tutoring agents that foster student engagement. By combining multimodal sensing like EEG and eye-tracking with adaptive pedagogical strategies, I aim to create intelligent systems that respond dynamically to a learner's cognitive and emotional states.",
     "links": {
@@ -24,6 +26,7 @@
   {
     "name": "Pasindu Bolonghege",
     "role": "Research Engineer",
+    "isAlumni": false,
     "photo": "images/people/pasindu.jpeg",
     "bio": "",
     "links": {
@@ -35,6 +38,7 @@
   {
     "name": "Sithmini Ranasingha",
     "role": "Research Engineer",
+    "isAlumni": false,
     "photo": "images/people/sithmini.jpg",
     "bio": "",
     "links": {
@@ -45,7 +49,8 @@
   },
   {
     "name": "Nipuni Arachchige",
-    "role": "Alumni",
+    "role": "Masters Student",
+    "isAlumni": true,
     "photo": "images/people/nipuni.jpg",
     "bio": "",
     "links": {
@@ -56,7 +61,8 @@
   },
   {
     "name": "Nuwan Sriyantha Bandara",
-    "role": "Alumni",
+    "role": "Research Engineer",
+    "isAlumni": true,
     "photo": "images/people/nuwan.jpeg",
     "bio": "",
     "links": {

@@ -91,7 +91,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Filter out the PI so she doesn't appear twice
     const teamMembers = d.people.filter(p => p.role !== 'Principal Investigator');
-    teamMembers.forEach(p => { (groups[p.role] = groups[p.role] || []).push(p); });
+    
+    // If true, put them in the 'Alumni' group bucket. Otherwise, group by their 'role'.
+    teamMembers.forEach(p => { 
+      const groupCategory = p.isAlumni ? 'Alumni' : p.role;
+      (groups[groupCategory] = groups[groupCategory] || []).push(p); 
+    });
 
     $('people-container').innerHTML = ORDER.filter(r => groups[r]).map(r => `
       <div class="people-group fade-in">
@@ -104,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <img class="person-photo" src="${p.photo}" alt="${p.name}" loading="lazy" />
               <div class="person-info">
                 <div class="person-name">${p.name}</div>
-                <div class="person-role">${p.role}</div>
+                <div class="person-role">${p.role}</div> 
                 
                 <div class="person-card-links">
                   ${Object.entries(p.links || {}).map(([k, v]) => `

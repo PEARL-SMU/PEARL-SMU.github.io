@@ -33,8 +33,8 @@ The website automatically categorizes and orders team members based on their `ro
   * `PhD Student`
   * `Masters Student`
   * `Visiting Researcher`
-  * `Alumni`
-* **Links:** The script automatically formats buttons with specific icons for the following predefined keys: `website`, `scholar`, `twitter`, `github`, and `email`.
+* To move a person to alumni change the attribute `isAlumni: true`.
+* **Links:** The script automatically formats buttons with specific icons for the following predefined keys: `scholar`, `github`, and `email`.
 
 ### 2. Publications (`publications.json`)
 * **Tags & Filtering:** The publication filter buttons at the top of the section are generated dynamically based on the unique `tags` you assign to each paper in the JSON array.
