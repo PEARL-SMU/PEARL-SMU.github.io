@@ -31,7 +31,7 @@
     "bio": "",
     "links": {
       "scholar": "https://scholar.google.com/citations?user=AHoRgowAAAAJ&hl=en",
-      "github": "",
+      "github": "#",
       "email": "pasindub@smu.edu.sg"
     }
   },
@@ -80,6 +80,18 @@
       "scholar": "https://scholar.google.com.hk/citations?user=-_-2jZwAAAAJ&hl=zh-CN",
       "github": "#",
       "email": "yimingzhang@smu.edu.sg"
+    }
+  },
+  {
+    "name": "Thamilezai Ananthakumar",
+    "role": "Visiting Researcher",
+    "isAlumni": false,
+    "photo": "images/people/thamil.jpeg",
+    "bio": "Visiting Undergraduate Research Student in Human–Machine Collaborative Systems and Pervasive Sensing. Research focuses on advancing photoplethysmography for wearable healthcare applications. Interests include biomedical instrumentation, wearable device design, and bio signal processing, including AI-driven methods for robust real-world health monitoring systems.",
+    "links": {
+      "github": "https://github.com/ThamilezaiAnanthakumar",
+      "scholar": "#",
+      "email": "thamilezaia@smu.edu.sg"
     }
   }
 ]
