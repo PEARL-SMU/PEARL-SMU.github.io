@@ -73,9 +73,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="pi-role">Assistant Professor of Computer Science, ResWORK Fellow</div>
             <p class="pi-bio">${pi.bio}</p>
             <div class="pi-links">
-              ${Object.entries(pi.links || {}).map(([k, v]) => `
-                <a class="btn btn-outline" 
-                   href="${k === 'email' ? 'mailto:' + v : v}" 
+              ${Object.entries(pi.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
+                <a class="btn btn-outline"
+                   href="${k === 'email' ? 'mailto:' + v : v}"
                    ${k === 'email' ? '' : 'target="_blank"'}>
                   ${linkLabels[k] || k}
                 </a>
@@ -112,10 +112,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="person-role">${p.role}</div> 
                 
                 <div class="person-card-links">
-                  ${Object.entries(p.links || {}).map(([k, v]) => `
-                    <a href="${k === 'email' ? 'mailto:' + v : v}" 
-                       ${k === 'email' ? '' : 'target="_blank"'} 
-                       class="card-link" 
+                  ${Object.entries(p.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
+                    <a href="${k === 'email' ? 'mailto:' + v : v}"
+                       ${k === 'email' ? '' : 'target="_blank"'}
+                       class="card-link"
                        onclick="event.stopPropagation()">
                       ${linkLabels[k] || k}
                     </a>
@@ -145,10 +145,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
         <div class="modal-bio">${p.bio}</div>
         <div class="modal-links">
-          ${Object.entries(p.links || {}).map(([k, v]) => `
-            <a class="modal-link" 
-               href="${k === 'email' ? 'mailto:' + v : v}" 
-               ${k === 'email' ? '' : 'target="_blank"'} >
+          ${Object.entries(p.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
+            <a class="modal-link"
+               href="${k === 'email' ? 'mailto:' + v : v}"
+               ${k === 'email' ? '' : 'target="_blank"'}>
               ${linkLabels[k] || k}
             </a>
           `).join('')}
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             <div class="pub-abstract">${p.abstract}</div>
             <button class="pub-toggle" data-pub="${i}">▸ Abstract</button>
             <div class="pub-links">
-              ${Object.entries(p.links || {}).map(([k, v]) => `<a class="pub-link" href="${v}" target="_blank">${k.toUpperCase()}</a>`).join('')}
+              ${Object.entries(p.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `<a class="pub-link" href="${v}" target="_blank">${k.charAt(0).toUpperCase() + k.slice(1)}</a>`).join('')}
             </div>
           </div>
 
