@@ -113,5 +113,17 @@
       "email": "vedicchawla@smu.edu.sg",
       "website": null
     }
+  },{
+    "name": "Mansitha Eashwara",
+    "role": "Research Engineer",
+    "isAlumni": false,
+    "photo": "images/people/mansitha.jpg",
+    "bio": "",
+    "links": {
+      "scholar": "https://scholar.google.com/citations?user=bXCKY-gAAAAJ&hl=en",
+      "github": "https://github.com/mansithaeashwara",
+      "email": "mansithae@smu.edu.sg",
+      "website": "https://www.mansitha.xyz/"
+    }
   }
 ]
