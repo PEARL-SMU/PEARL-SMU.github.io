@@ -91,7 +91,7 @@
   {
     "name": "Thamilezai Ananthakumar",
     "role": "Visiting Researcher",
-    "isAlumni": false,
+    "isAlumni": true,
     "photo": "images/people/thamil.jpeg",
     "bio": "Visiting Undergraduate Research Student in Human–Machine Collaborative Systems and Pervasive Sensing. Research focuses on advancing photoplethysmography for wearable healthcare applications. Interests include biomedical instrumentation, wearable device design, and bio signal processing, including AI-driven methods for robust real-world health monitoring systems.",
     "links": {
