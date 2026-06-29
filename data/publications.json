@@ -1,45 +1,22 @@
 [
   {
-    "title": "Demo: Compiling Adaptive VR Simulations from Conceptual Content",
-    "authors": [
-      "Pasindu Bolonghege",
-      "Thivya Kandappu"
-    ],
-    "venue": "MobiSys 2026",
-    "year": 2026,
-    "tags": [
-      "Generative virtual reality",
-      "Large language models",
-      "Agentic systems",
-      "Realtime compilation"
-    ],
-    "highlight": true,
-    "image": "",
-    "abstract": "We present Sage, a system that generates VR simulations from conceptual inputs, including text, diagrams, and equations. The system extracts variables, relationships, and constraints from input content and compiles them into executable Unity environments without requiring manual specification of simulation logic. Rather than producing a single static simulation, the system generates simulations at progressively increasing levels of conceptual complexity derived from the same input, enabling “what-if” exploration across levels. Sage runs on a Meta Quest Pro [4] and supports runtime compilation to transform the input into a live Unity scene. In this demo, attendees will provide conceptual inputs, observe immediate simulation generation, and interact with simulations by adjusting parameters to evaluate the system’s ability to maintain coherent behavior across levels.",
-    "links": {
-      "paper": null,
-      "code": null,
-      "demo": null
-    }
-  },
-  {
     "title": "Toward Stateful Generative Environments from Structured Content",
     "authors": [
       "Pasindu Bolonghege",
       "Thivya Kandappu"
     ],
-    "venue": "AutoSys 2026",
+    "venue": "MobiSys Workshop 2026",
     "year": 2026,
     "tags": [
       "Generative virtual reality",
       "Large language models",
       "Agentic systems"
     ],
-    "highlight": true,
+    "highlight": false,
     "image": "images/publications/autoSys26.jpg",
     "abstract": "Interactive simulations are powerful tools for experiential and embodied learning, yet they remain largely handcrafted and domain-specific. Creating such systems typically requires manually translating conceptual knowledge into executable models, limiting scalability and reuse across domains. We argue that simulations should instead be compiled from conceptual content, automatically transforming text, diagrams, or structured explanations into parameterized, manipulable environments. This position paper proposes a research agenda for stateful generative environments that combine generative model synthesis with closed-loop adaptation. We introduce a domainagnostic abstraction that represents conceptual content as executable models consisting of objects, state variables, manipulable parameters, and dynamic update rules. These models can be compiled into interactive simulation environments, including XR settings, where users explore system behavior by manipulating parameters. Beyond one-shot generation, such environments can leverage multimodal sensing to infer user interaction states and adapt simulations to guide exploration. We outline the architectural foundations required to realize this vision and identify open challenges in structured content extraction, dynamic consistency, cross-domain generalization, and on-device adaptive inference. Treating interactive environments as compiled knowledge artifacts opens a new direction for generative, sensor-aware, and domain-agnostic simulation systems.",
     "links": {
-      "paper": null,
+      "paper": "https://dl.acm.org/doi/epdf/10.1145/3812836.3814748",
       "code": null,
       "demo": null
     }
@@ -107,7 +84,7 @@
       "Thivya Kandappu",
       "Archan Misra"
     ],
-    "venue": "ACM IMWUT 24",
+    "venue": "IMWUT 2024",
     "year": 2024,
     "tags": [
       "Event-based Eye Tracking",

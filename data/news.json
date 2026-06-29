@@ -3,22 +3,17 @@
     "category": "Join",
     "title": "New research engineer joined our lab",
     "body": "We are thrilled to announce that Mansitha Eashwara has joined our lab as a Research Engineer."
-  },{
+  },
+  {
     "date": "2026-05-01",
     "category": "Paper",
-    "title": "Two papers accepted at MobiSys 2026",
-    "body": "We are thrilled to announce that one demo paper and one workshop paper have been accepted at MobiSys 2026."
+    "title": "Acceptances at MobiSys 2026",
+    "body": "We are thrilled to announce that a demo and a workshop paper have been accepted at MobiSys 2026."
   },
   {
     "date": "2026-03-02",
     "category": "Paper",
     "title": "Our paper accepted at CHI 2026",
-    "body": "We are thrilled to announce that our paper titled 'Motor-Mediated Creativity: Bridging Embodied Skill Training and Digital Expression' accpeted to be presented at CHI 2026."
-  },
-  {
-    "date": "2026",
-    "category": "Grant",
-    "title": "New Research Grant",
-    "body": "“SynapSee: Multi-Light Probing for Event-Based Pupil Sensing in Neuro-Ocular Health Applications”, Principal Investigator, Ministry of Education (MOE), AcRF Tier 2, S$ 980,696, 2026/01 – 2028/12, PI: Thivya KANDAPPU (SMU), Co-PI: Archan MISRA (SMU), Dong MA (SMU), Raymond NAJJAR (NUS)"
+    "body": "We are thrilled to announce that our paper titled 'Motor-Mediated Creativity: Bridging Embodied Skill Training and Digital Expression' has been accepted to be presented at CHI 2026."
   }
 ]
