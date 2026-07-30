@@ -539,6 +539,11 @@ h2 {
   background: rgba(192, 80, 42, .06);
 }
 
+/* Compound selector so it outranks the `.pub-card { display: flex }` below */
+.pub-card.pub-hidden {
+  display: none;
+}
+
 .pub-list {
   display: flex;
   flex-direction: column;
@@ -990,4 +995,33 @@ footer a {
   color: var(--ink3);
   margin-top: 0.75rem;
   line-height: 1.6;
+}
+
+.grant-card.grant-hidden {
+  display: none;
+}
+
+.grants-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.grants-toggle {
+  font-size: .78rem;
+  font-family: var(--ff-mono);
+  letter-spacing: .05em;
+  padding: .45rem 1.1rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--ink3);
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.grants-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(192, 80, 42, .06);
 }
