@@ -10,7 +10,7 @@
     ],
     "venue": "ICML 2026 Workshop on Structured Data for Health",
     "year": 2026,
-    "tags": ["PPG", "Wearable Sensors", "Heart Rate Estimation"],
+    "tags": ["PPG", "Wearable Sensors"],
     "highlight": false,
     "image": "images/publications/ICML26.png",
     "abstract": "Accurate heart rate estimation from wrist-worn photoplethysmography (PPG) during sports is challenging due to motion artifacts and asymmetric signal quality across wrists. Existing methods typically rely on single-wrist sensing and hand-crafted quality measures, overlooking complementary bilateral information. We propose an end-to-end bilateral PPG framework that jointly models both wrists using dual PapaGei encoders, SQI-conditioned temporal gating, and cross-wrist self-attention to emphasize cleaner signals. Evaluated on a bilateral sports dataset spanning six activities and 30 subjects with ECG ground truth, the model achieves 2.85 bpm MAE and r = 0.96, outperforming unilateral baselines. To improve deployability, we further introduce a knowledge distillation framework that transfers bilateral motion-compensation priors into a single-wrist EfficientNet-1D student. The distilled student achieves 2.79 bpm and 3.72 bpm MAE on the non-dominant and dominant wrist, respectively, surpassing corresponding unilateral baselines while requiring only one sensor at inference. These results establish bilateral PPG as an effective training paradigm for robust single-wrist heart rate estimation under motion.",
@@ -29,7 +29,7 @@
     "venue": "MobiSys Workshop 2026",
     "year": 2026,
     "tags": [
-      "Generative virtual reality",
+      "Virtual reality",
       "Large language models",
       "Agentic systems"
     ],
@@ -55,11 +55,7 @@
     "year": 2026,
     "tags": [
       "Motor-mediated creativity",
-      "Digital art",
-      "Corrective feedback",
-      "Ideation guide",
-      "Motor fluency",
-      "Structured guidance"
+      "Digital art"
     ],
     "highlight": false,
     "image": "images/publications/chi26-2.jpg",
@@ -83,8 +79,6 @@
     "year": 2024,
     "tags": [
       "Event-based Eye Tracking",
-      "Unsupervised Learning",
-      "Variational Graph Autoencoder",
       "Pupil Localization"
     ],
     "highlight": false,
@@ -109,9 +103,7 @@
     "year": 2024,
     "tags": [
       "Event-based Eye Tracking",
-      "Event Cameras",
-      " Adaptive Event Sampling",
-      "Authentication"
+      "Adaptive Event Sampling"
     ],
     "highlight": false,
     "image": "images/publications/IMWUT24-2.png",
