@@ -104,7 +104,7 @@
   {
     "name": "Vedic Chawla",
     "role": "Visiting Researcher",
-    "isAlumni": false,
+    "isAlumni": true,
     "photo": "images/people/vedic.jpg",
     "bio": "I am a Visiting Research Student at SMU and an Undergraduate Student at IIIT Surat. I have previously contributed to Apache Datafusion, an open-source database query engine framework, and authored FedAsyncM, a hybrid aggregation algorithm for Federated Learning. I am currently working on Event-Stream Super Resolution at SMU, with the aim to capture high-speed subtle motion more clearly. Beyond that, my interests span Intelligent Systems and Learning Algorithms.",
     "links": {
