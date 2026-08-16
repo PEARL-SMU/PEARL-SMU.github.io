@@ -24,6 +24,19 @@
       "website": "https://www.gevindu-ganganath.info/"
     }
   },
+   {
+    "name": "Eshan Surendra",
+    "role": "PhD Student",
+    "isAlumni": false,
+    "photo": "images/people/januka.png",
+    "bio": "",
+    "links": {
+      "scholar": "",
+      "github": "https://github.com/eshansurendra",
+      "email": "januka.sa.2026@phdcs.smu.edu.sg",
+      "website": "https://eshansurendra.github.io/"
+    }
+  },
   {
     "name": "Pasindu Bolonghege",
     "role": "Research Engineer",
