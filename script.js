@@ -130,20 +130,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         $('profile-container').innerHTML = `
           <div class="profile-layout fade-in">
             <img class="profile-photo" src="${abs(person.photo)}" alt="${person.name}" loading="lazy" />
-            <div class="profile-info">
-              <h1 class="profile-name">${person.name}</h1>
-              <div class="profile-role">${person.title || person.role}</div>
-              <p class="profile-bio">${person.bio}</p>
-              <div class="profile-links">
-                ${Object.entries(person.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
-                  <a class="btn btn-outline"
-                     href="${k === 'email' ? 'mailto:' + v : v}"
-                     ${k === 'email' ? '' : 'target="_blank"'}>
-                    ${linkLabels[k] || k}
-                  </a>
-                `).join('')}
-              </div>
+            <h1 class="profile-name">${person.name}</h1>
+            <div class="profile-role">${person.title || person.role}</div>
+            <div class="profile-links">
+              ${Object.entries(person.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
+                <a class="btn btn-outline"
+                   href="${k === 'email' ? 'mailto:' + v : v}"
+                   ${k === 'email' ? '' : 'target="_blank"'}>
+                  ${linkLabels[k] || k}
+                </a>
+              `).join('')}
             </div>
+            <p class="profile-bio">${person.bio}</p>
           </div>`;
 
         // Publications where this person appears in the authors list, matched by name.
