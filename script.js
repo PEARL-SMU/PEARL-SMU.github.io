@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (String(iso).trim().length === 4) return iso;
       return new Date(iso).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
     };
-    const PI_NAME = d.people.find(p => p.role === 'Principal Investigator')?.name || '';
 
     /* ── Intersection fade-in (shared across every page) ──── */
     const observeFadeIns = () => {
@@ -222,7 +221,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               <div class="pub-title">${p.title}</div>
               ${p.highlight ? '<span class="pub-badge">Featured</span>' : ''}
             </div>
-            <div class="pub-authors">${p.authors.map(a => namesMatch(a, PI_NAME) ? `<span class="self">${a}</span>` : a).join(', ')}</div>
+            <div class="pub-authors">${p.authors.join(', ')}</div>
             <div class="pub-venue">${p.venue}</div>
             <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
             <div class="pub-abstract">${p.abstract}</div>

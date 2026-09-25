@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/people/:name", "destination": "/people/profile.html" }
+    { "source": "/people/:name", "destination": "/api/people?name=:name" },
+    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/robots.txt", "destination": "/api/robots" }
   ]
 }

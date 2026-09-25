@@ -94,6 +94,7 @@
     "name": "Yiming Zhang",
     "role": "Research Scientist",
     "photo": "images/people/yiming.jpeg",
+    "isAlumni": false,
     "bio": "Yiming Zhang is a Research Scientist specializing in Wearable/Mobile Health, AIOT and Health Informatics. Expertise spans large-scale clinical data acquisition, biomedical data analysis, interpretable/personalized AI/ML, edge deployment, and wearable device prototyping.",
     "links": {
       "scholar": "https://scholar.google.com.hk/citations?user=-_-2jZwAAAAJ&hl=zh-CN",
