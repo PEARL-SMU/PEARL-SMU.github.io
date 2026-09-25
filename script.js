@@ -30,6 +30,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
     const PI_NAME = d.people.find(p => p.role === 'Principal Investigator')?.name || '';
 
+    /* ── Intersection fade-in (shared across every page) ──── */
+    const observeFadeIns = () => {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-in:not(.visible)').forEach(el => io.observe(el));
+    };
+
     // Centralized link labels with FontAwesome icons
     const linkLabels = {
       website: '<i class="fa-solid fa-globe"></i> Website',
@@ -39,32 +47,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       email: '<i class="fa-solid fa-envelope"></i> Email'
     };
 
-    /* ── Nav brand ────────────────────────────────────────── */
-    $('nav-lab-name').textContent = d.lab.name;
+    /* ── Hero (home page only) ──────────────────────────────── */
+    if ($('hero-fullname')) {
+      $('hero-affiliation').textContent = d.lab.affiliation;
+      $('hero-fullname').textContent = d.lab.fullName;
+      $('hero-tagline').textContent = d.lab.tagline;
+      $('hero-desc').textContent = d.lab.description;
+      $('hero-meta').innerHTML = [
+        `<span>📍 ${d.lab.location}</span>`,
+        `<span>✉️ ${d.lab.email}</span>`,
+        `<span>Est. ${d.lab.founded}</span>`,
+      ].join('');
 
-    /* ── Hero ─────────────────────────────────────────────── */
-    $('hero-affiliation').textContent = d.lab.affiliation;
-    $('hero-fullname').textContent = d.lab.fullName;
-    $('hero-tagline').textContent = d.lab.tagline;
-    $('hero-desc').textContent = d.lab.description;
-    $('hero-meta').innerHTML = [
-      `<span>📍 ${d.lab.location}</span>`,
-      `<span>✉️ ${d.lab.email}</span>`,
-      `<span>Est. ${d.lab.founded}</span>`,
-    ].join('');
+      /* research themes */
+      $('themes-grid').innerHTML = d.themes.map(t => `
+        <div class="theme-card fade-in">
+          <div class="theme-icon">${t.icon}</div>
+          <div class="theme-title">${t.title}</div>
+          <div class="theme-text">${t.text}</div>
+        </div>`).join('');
+    }
 
-    /* research themes */
-    $('themes-grid').innerHTML = d.themes.map(t => `
-      <div class="theme-card fade-in">
-        <div class="theme-icon">${t.icon}</div>
-        <div class="theme-title">${t.title}</div>
-        <div class="theme-text">${t.text}</div>
-      </div>`).join('');
-
-    /* ── Principal Investigator (Dedicated Section) ───────── */
+    /* ── Principal Investigator (people page only) ─────────── */
     const pi = d.people.find(p => p.role === 'Principal Investigator');
 
-    if (pi) {
+    if (pi && $('pi-container')) {
       $('pi-container').innerHTML = `
         <div class="pi-layout fade-in">
           <img class="pi-photo" src="${pi.photo}" alt="${pi.name}" loading="lazy" />
@@ -86,6 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     /* ── People (Rest of the Team) ────────────────────────── */
+    if ($('people-container')) {
     const ORDER = ['Postdoc', 'PhD Student', 'Research Engineer', 'Masters Student', 'Visiting Researcher', 'Alumni'];
     const groups = {};
 
@@ -174,8 +182,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     $('modal-close').addEventListener('click', () => overlay.classList.remove('open'));
     overlay.addEventListener('click', e => e.target === overlay && overlay.classList.remove('open'));
     document.addEventListener('keydown', e => e.key === 'Escape' && overlay.classList.remove('open'));
+    } // end people-container guard
 
     /* ── Publications ─────────────────────────────────────── */
+    if ($('pub-list')) {
     let activeFilter = 'All';
     let pubsExpanded = false;
     const PUBS_PREVIEW = 3;
@@ -191,14 +201,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           renderPubs();
           renderFilters();
         }));
-    };
-
-    /* ── Intersection fade-in ─────────────────────────────── */
-    const observeFadeIns = () => {
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
-      }, { threshold: 0.1 });
-      document.querySelectorAll('.fade-in:not(.visible)').forEach(el => io.observe(el));
     };
 
     const renderPubs = () => {
@@ -273,8 +275,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     renderFilters();
     renderPubs();
+    } // end pub-list guard
 
     /* ── Grants ────────────────────────────────────────────── */
+    if ($('grants-list')) {
     const GRANTS_PREVIEW = 3;
 
     $('grants-list').innerHTML = d.grants.map((g, i) => `
@@ -317,9 +321,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!grantsExpanded) $('grants').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
+    } // end grants-list guard
 
 
     /* ── News ─────────────────────────────────────────────── */
+    if ($('news-list')) {
     const sortedNews = d.news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     $('news-list').innerHTML = sortedNews.map(n => `
@@ -333,25 +339,15 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="news-body">${n.body}</div>
         </div>
       </div>`).join('');
+    } // end news-list guard
 
-    /* ── Footer ───────────────────────────────────────────── */
-    $('footer').innerHTML = `© ${new Date().getFullYear()} ${d.lab.fullName} · ${d.lab.affiliation} ·
-      <a href="mailto:${d.lab.email}">${d.lab.email}</a>`;
-
-    /* ── Active nav highlight on scroll ──────────────────── */
-
-    const sections = ['home', 'pi', 'people', 'publications', 'grants', 'news'].map(id => $(id));
-    const navLinks = document.querySelectorAll('nav .nav-link');
-    const onScroll = () => {
-      const mid = window.scrollY + window.innerHeight / 3;
-      sections.forEach((s, i) => {
-        if (!s) return;
-        if (s.offsetTop <= mid && s.offsetTop + s.offsetHeight > mid)
-          navLinks.forEach((l, j) => l.classList.toggle('active', i === j));
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    /* ── Footer (present on every page) ────────────────────── */
+    if ($('footer')) $('footer').innerHTML = `
+      <div class="footer-logos">
+        <img class="footer-logo-pips" src="images/PIPS-favicons/apple-touch-icon.png" alt="PIPS Lab" loading="lazy" />
+        <img class="footer-logo-smu" src="images/smu-logo-cropped.png" alt="Singapore Management University" loading="lazy" />
+      </div>
+      <div>© ${new Date().getFullYear()} ${d.lab.fullName} · ${d.lab.affiliation}</div>`;
 
     observeFadeIns();
 

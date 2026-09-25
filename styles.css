@@ -7,27 +7,36 @@
 }
 
 :root {
-  /* ── PEARL Lab Dark Theme ── */
-  --ink: #fbfaf8;
-  /* Pearl white for primary text */
-  --ink2: #e4dfd5;
-  /* Slightly muted pearl for secondary text */
-  --ink3: #a0b3c6;
-  /* Muted blue-gray for tertiary text/dates */
-  --paper: #0b1828;
-  /* Very dark navy for the main background */
-  --paper2: #173656;
-  /* The logo's deep navy for cards and sections */
-  --paper3: #234d7a;
-  /* Lighter navy for tags and highlights */
-  --accent: #dca331;
-  /* Gold from the logo */
-  --accent2: #eeb644;
-  /* Lighter gold for hover states */
-  --gold: #dca331;
-  /* Matching accent */
-  --line: rgba(255, 255, 255, 0.12);
-  /* Subtle light borders */
+  /* ── PIPS Lab Light Theme ── */
+  --ink: #0b1828;
+  /* Brand navy for primary text */
+  --ink2: #3c4b63;
+  /* Muted slate-navy for secondary text */
+  --ink3: #64748b;
+  /* Slate gray for tertiary text/dates */
+  --paper: #ffffff;
+  /* White main background */
+  --paper2: #f4f6fb;
+  /* Very light blue-gray for cards and sections */
+  --paper3: #e7ecf6;
+  /* Light blue-gray still for tags and highlights */
+  --accent: #3f5be0;
+  /* Blue from the logo gradient, darkened for contrast on white */
+  --accent2: #7c3aed;
+  /* Violet from the logo gradient, for hover states */
+  --gold: #0e8a9c;
+  /* Cyan from the logo gradient, darkened for contrast on white */
+  --gradient: linear-gradient(90deg, #22d3ee, #3f5be0, #7c3aed);
+  /* Full logo gradient, for accent bars */
+  --line: rgba(11, 24, 40, 0.12);
+  /* Subtle dark borders */
+
+  /* ── Header/footer chrome — always the brand navy, regardless of the light body theme ── */
+  --chrome-bg: #041936;
+  --chrome-ink: #f7f9fc;
+  --chrome-ink3: #9fb3cc;
+  --chrome-accent: #5b7cfa;
+  --chrome-line: rgba(255, 255, 255, 0.14);
 
   /* ── Structure & Typography ── */
   --radius: 8px;
@@ -50,6 +59,13 @@ body {
   color: var(--ink);
   font-size: 16px;
   line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
 }
 
 /* ── Nav ──────────────────────────────────────────────── */
@@ -60,10 +76,9 @@ nav {
   right: 0;
   z-index: 100;
   height: var(--nav-h);
-  background: rgba(11, 24, 40, 0.88);
-  /* Dark navy with transparency */
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
+  background: var(--chrome-bg);
+  /* Solid brand navy — matches the logo icon's own background exactly */
+  border-bottom: 1px solid var(--chrome-line);
   display: flex;
   align-items: center;
   padding: 0 clamp(1.5rem, 5vw, 4rem);
@@ -71,23 +86,10 @@ nav {
 }
 
 .nav-brand {
-  font-family: var(--ff-serif);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--ink);
-  text-decoration: none;
-  letter-spacing: -.01em;
-  margin-right: auto;
   display: flex;
-  /* Added to align logo and text */
   align-items: center;
-  /* Added to align logo and text */
-  gap: 0.75rem;
-  /* Space between logo and text */
-}
-
-.nav-brand span {
-  color: var(--accent);
+  margin-right: auto;
+  text-decoration: none;
 }
 
 nav a.nav-link {
@@ -96,7 +98,7 @@ nav a.nav-link {
   letter-spacing: .04em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--ink3);
+  color: var(--chrome-ink3);
   padding: .25rem 0;
   border-bottom: 2px solid transparent;
   transition: color .2s var(--ease), border-color .2s var(--ease);
@@ -104,18 +106,18 @@ nav a.nav-link {
 
 nav a.nav-link:hover,
 nav a.nav-link.active {
-  color: var(--accent);
-  border-color: var(--accent);
+  color: var(--chrome-ink);
+  border-color: var(--chrome-accent);
 }
 
 #nav-logo {
-  height: 48px;
-  width: 48px;
-  object-fit: cover;
-  border-radius: 50%;
-  /* Makes the image perfectly round */
+  height: 56px;
+  width: 56px;
+  object-fit: contain;
+  border-radius: 12px;
+  /* Matches the app icon's own rounded-square shape */
   display: block;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   /* Adds a subtle shadow to separate it from the background */
 }
 
@@ -182,8 +184,9 @@ h2 {
 .hero-eyebrow::after {
   content: '';
   flex: 0 0 40px;
-  height: 1px;
-  background: var(--gold);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gradient);
 }
 
 .hero-tagline {
@@ -245,7 +248,7 @@ h2 {
 }
 
 .btn-primary:hover {
-  background: #a0421f;
+  background: #3d5be0;
   transform: translateY(-1px);
 }
 
@@ -283,6 +286,23 @@ h2 {
   box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
 }
 
+/* Explore portal grid on the home page — same card look, no top divider */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+a.theme-card {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+a.theme-card:hover {
+  border-color: var(--accent);
+}
+
 .theme-icon {
   font-size: 1.5rem;
   color: var(--accent);
@@ -302,9 +322,6 @@ h2 {
 }
 
 /* ── People ────────────────────────────────────────────── */
-#people {
-  border-bottom: 1px solid var(--line);
-}
 
 .people-group {
   margin-bottom: 3rem;
@@ -385,7 +402,7 @@ h2 {
   padding: 0.25rem 0.6rem;
   border: 1px solid var(--line);
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(11, 24, 40, 0.03);
   transition: all 0.2s var(--ease);
   display: inline-flex;
   align-items: center;
@@ -508,9 +525,6 @@ h2 {
 }
 
 /* ── Publications ──────────────────────────────────────── */
-#publications {
-  border-bottom: 1px solid var(--line);
-}
 
 .pub-filters {
   display: flex;
@@ -536,7 +550,7 @@ h2 {
 .filter-btn:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(192, 80, 42, .06);
+  background: rgba(63, 91, 224, .08);
 }
 
 /* Compound selector so it outranks the `.pub-card { display: flex }` below */
@@ -814,17 +828,48 @@ h2 {
 
 /* ── Footer ────────────────────────────────────────────── */
 footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
   text-align: center;
   padding: 2.5rem clamp(1.5rem, 5vw, 4rem);
   font-size: .8rem;
-  color: var(--ink3);
+  color: var(--chrome-ink3);
   font-family: var(--ff-mono);
-  border-top: 1px solid var(--line);
+  background: var(--chrome-bg);
+  border-top: 1px solid var(--chrome-line);
 }
 
 footer a {
-  color: var(--ink3);
+  color: var(--chrome-ink);
   text-decoration: underline;
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+}
+
+.footer-logo-pips {
+  height: 60px;
+  width: 60px;
+  object-fit: contain;
+  border-radius: 13px;
+  display: block;
+}
+
+.footer-logo-smu {
+  height: 64px;
+  width: auto;
+  display: block;
+  background: #fff;
+  padding: .65rem 1.25rem;
+  border-radius: 8px;
 }
 
 /* ── Scroll fade-in animation ──────────────────────────── */
@@ -915,9 +960,6 @@ footer a {
 }
 
 /* ── Grants ────────────────────────────────────────────── */
-#grants {
-  border-bottom: 1px solid var(--line);
-}
 
 .grants-list {
   display: flex;
@@ -963,7 +1005,7 @@ footer a {
   color: var(--gold);
   font-weight: 500;
   padding: 0.2rem 0.6rem;
-  background: rgba(220, 163, 49, 0.1);
+  background: rgba(14, 138, 156, 0.1);
   border-radius: 4px;
   white-space: nowrap;
 }
@@ -1023,5 +1065,5 @@ footer a {
 .grants-toggle:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(192, 80, 42, .06);
+  background: rgba(63, 91, 224, .08);
 }

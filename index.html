@@ -4,8 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PEARL SMU</title>
-  <link rel="icon" type="image/png" href="images/PEARL Logo v2.png">
+  <title>PIPS Lab</title>
+  <link rel="icon" href="images/PIPS-favicons/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/PIPS-favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="images/PIPS-favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="images/PIPS-favicons/apple-touch-icon.png">
+  <link rel="manifest" href="images/PIPS-favicons/site.webmanifest">
+  <meta name="theme-color" content="#041936">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
@@ -19,17 +24,17 @@
 <body>
 
   <nav id="main-nav">
-    <a class="nav-brand" href="#home">
-      <img src="images/PEARL Logo v2.png" alt="PEARL Lab Logo" id="nav-logo" />
-      <span id="nav-lab-name"></span>
+    <a class="nav-brand" href="index.html">
+      <img src="images/PIPS-favicons/apple-touch-icon.png" alt="PIPS Lab Logo" id="nav-logo" />
     </a>
-    <a class="nav-link" href="#home">Home</a>
-    <a class="nav-link" href="#pi">PI</a> 
-    <a class="nav-link" href="#people">People</a>
-    <a class="nav-link" href="#publications">Publications</a>
-    <a class="nav-link" href="#grants">Grants</a>
-    <a class="nav-link" href="#news">News</a>
+    <a class="nav-link active" href="index.html">Home</a>
+    <a class="nav-link" href="people.html">People</a>
+    <a class="nav-link" href="publications.html">Publications</a>
+    <a class="nav-link" href="grants.html">Grants</a>
+    <a class="nav-link" href="news.html">News</a>
   </nav>
+
+  <main>
 
   <section id="home">
     <div class="hero-eyebrow" id="hero-affiliation"></div>
@@ -38,53 +43,42 @@
     <p class="hero-desc" id="hero-desc"></p>
     <div class="hero-meta" id="hero-meta"></div>
     <div class="hero-buttons">
-      <a class="btn btn-primary" href="#publications">Our Research</a>
-      <a class="btn btn-outline" href="#pi">Meet the Team</a>
+      <a class="btn btn-primary" href="publications.html">Our Research</a>
+      <a class="btn btn-outline" href="people.html">Meet the Team</a>
     </div>
     <div class="themes-grid" id="themes-grid"></div>
   </section>
 
-  <section id="pi">
-    <p class="section-label">Leadership</p>
-    <h2>Principal Investigator</h2>
-    <div id="pi-container"></div>
+  <section id="explore">
+    <p class="section-label">Explore</p>
+    <h2>Around the Lab</h2>
+    <div class="portal-grid">
+      <a class="theme-card fade-in" href="people.html">
+        <div class="theme-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="theme-title">People</div>
+        <div class="theme-text">Meet our Principal Investigator and the researchers behind the lab.</div>
+      </a>
+      <a class="theme-card fade-in" href="publications.html">
+        <div class="theme-icon"><i class="fa-solid fa-book"></i></div>
+        <div class="theme-title">Publications</div>
+        <div class="theme-text">Our latest papers across perception, intelligent systems, and HCI.</div>
+      </a>
+      <a class="theme-card fade-in" href="grants.html">
+        <div class="theme-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+        <div class="theme-title">Grants</div>
+        <div class="theme-text">Current and past funding supporting our research.</div>
+      </a>
+      <a class="theme-card fade-in" href="news.html">
+        <div class="theme-icon"><i class="fa-solid fa-newspaper"></i></div>
+        <div class="theme-title">News</div>
+        <div class="theme-text">Recent awards, talks, papers, and lab updates.</div>
+      </a>
+    </div>
   </section>
 
-  <section id="people">
-    <p class="section-label">Team</p>
-    <h2>People</h2>
-    <div id="people-container"></div>
-  </section>
-
-  <section id="publications">
-    <p class="section-label">Research</p>
-    <h2>Recent Publications</h2>
-    <div class="pub-filters" id="pub-filters"></div>
-    <div class="pub-list" id="pub-list"></div>
-    <div class="grants-more" id="pub-more"></div>
-  </section>
-
-  <section id="grants">
-    <p class="section-label">Funding</p>
-    <h2>Grants</h2>
-    <div class="grants-list" id="grants-list"></div>
-    <div class="grants-more" id="grants-more"></div>
-  </section>
-
-  <section id="news">
-    <p class="section-label">Updates</p>
-    <h2>News</h2>
-    <div class="news-list" id="news-list"></div>
-  </section>
+  </main>
 
   <footer id="footer"></footer>
-
-  <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true">
-    <div class="modal" id="modal">
-      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
-      <div id="modal-content"></div>
-    </div>
-  </div>
 
   <script src="script.js" defer></script>
 </body>

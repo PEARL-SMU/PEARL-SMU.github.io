@@ -1,13 +1,19 @@
-# PEARL Website Documentation
+# PIPS Lab Website Documentation
 
-This repository contains the front-end source code for the lab's website. It is a lightweight, static, single-page application built with plain HTML, CSS, and JavaScript that dynamically loads all of its content from JSON files.
+This repository contains the front-end source code for the lab's website. It is a lightweight, static, multi-page site built with plain HTML, CSS, and JavaScript that dynamically loads all of its content from JSON files.
 
 ## 📁 Project Structure
 
-* `index.html`: The main page structure containing sections for Home, Leadership, Team, Publications, Grants, and News.
-* `styles.css`: Contains the "PEARL Lab Dark Theme" styling, including responsive layouts, CSS variables for theming, and scroll animations.
-* `script.js`: The core logic that fetches data concurrently, populates the HTML dynamically, handles publication filtering, and triggers intersection observers for fade-in animations.
+* `index.html`: Home — hero intro plus a portal grid linking to the other pages.
+* `people.html`: Leadership (Principal Investigator) and the rest of the Team.
+* `publications.html`: Recent Publications, with tag filtering.
+* `grants.html`: Grants and funding.
+* `news.html`: News.
+* `styles.css`: Contains the "PIPS Lab Dark Theme" styling, including responsive layouts, CSS variables for theming, and scroll animations.
+* `script.js`: Shared across every page. Fetches all data concurrently on load, then populates whichever sections exist in that page's HTML (each block is guarded by an `if ($('some-id'))` check), handles publication filtering, and triggers intersection observers for fade-in animations.
 * `data/`: This directory must contain the six JSON data files that power the site content: `lab.json`, `themes.json`, `people.json`, `publications.json`, `grants.json`, and `news.json`.
+
+To add a new page, copy the `<nav>` and `<footer>` markup from an existing page, mark the matching `.nav-link` as `active`, and reuse `script.js` as-is — it only touches elements that are actually present on the page.
 
 ## 🚀 Setup & Installation
 
