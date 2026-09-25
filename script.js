@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     // Fetch all JSON data concurrently
     const [labRes, themesRes, peopleRes, pubsRes, grantsRes, newsRes] = await Promise.all([
-      fetch('data/lab.json'),
-      fetch('data/themes.json'),
-      fetch('data/people.json'),
-      fetch('data/publications.json'),
-      fetch('data/grants.json'), // <-- NEW
-      fetch('data/news.json')
+      fetch('/data/lab.json'),
+      fetch('/data/themes.json'),
+      fetch('/data/people.json'),
+      fetch('/data/publications.json'),
+      fetch('/data/grants.json'), // <-- NEW
+      fetch('/data/news.json')
     ]);
 
     // Parse JSON
@@ -22,6 +22,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── helpers ─────────────────────────────────────────── */
     const $ = id => document.getElementById(id);
+    // JSON data stores asset paths relative to the site root (e.g. "images/people/x.jpg").
+    // Root-anchor them so they still resolve correctly from a nested page like /people/profile.html.
+    const abs = path => (!path || /^(https?:)?\/\//.test(path) || path.startsWith('/')) ? path : '/' + path;
+    const slugify = name => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    // people.json names can carry an honorific ("Dr. Thivya Kandappu") that publications.json
+    // author strings don't ("Thivya Kandappu") — strip it so the two sides still match.
+    const stripTitle = name => name.replace(/^(dr|prof|professor)\.?\s+/i, '').trim().toLowerCase();
+    const namesMatch = (a, b) => stripTitle(a) === stripTitle(b);
     const fmt = iso => {
       if (!iso) return '';
       // If the date is just a 4-digit year, return the year directly
@@ -49,7 +57,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── Hero (home page only) ──────────────────────────────── */
     if ($('hero-fullname')) {
-      $('hero-affiliation').textContent = d.lab.affiliation;
       $('hero-fullname').textContent = d.lab.fullName;
       $('hero-tagline').textContent = d.lab.tagline;
       $('hero-desc').textContent = d.lab.description;
@@ -68,127 +75,120 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>`).join('');
     }
 
-    /* ── Principal Investigator (people page only) ─────────── */
-    const pi = d.people.find(p => p.role === 'Principal Investigator');
-
-    if (pi && $('pi-container')) {
-      $('pi-container').innerHTML = `
-        <div class="pi-layout fade-in">
-          <img class="pi-photo" src="${pi.photo}" alt="${pi.name}" loading="lazy" />
-          <div class="pi-info">
-            <h3 class="pi-name">${pi.name}</h3>
-            <div class="pi-role">Assistant Professor of Computer Science, ResWORK Fellow</div>
-            <p class="pi-bio">${pi.bio}</p>
-            <div class="pi-links">
-              ${Object.entries(pi.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
-                <a class="btn btn-outline"
-                   href="${k === 'email' ? 'mailto:' + v : v}"
-                   ${k === 'email' ? '' : 'target="_blank"'}>
-                  ${linkLabels[k] || k}
-                </a>
-              `).join('')}
-            </div>
-          </div>
-        </div>`;
-    }
-
-    /* ── People (Rest of the Team) ────────────────────────── */
+    /* ── People (current + alumni, each a flat grid, seniority-sorted) ── */
     if ($('people-container')) {
-    const ORDER = ['Postdoc', 'PhD Student', 'Research Engineer', 'Masters Student', 'Visiting Researcher', 'Alumni'];
-    const groups = {};
+      // Anyone whose role isn't listed here sorts after everyone who is, in JSON order.
+      const ROLE_ORDER = [
+        'Principal Investigator',
+        'Research Scientist',
+        'PhD Candidate',
+        'PhD Student',
+        'Masters Student',
+        'Research Engineer',
+        'Visiting Researcher',
+      ];
+      const roleRank = role => {
+        const i = ROLE_ORDER.indexOf(role);
+        return i === -1 ? ROLE_ORDER.length : i;
+      };
+      // Array.sort is stable, so people who share a role keep their JSON order.
+      const byRole = people => [...people].sort((a, b) => roleRank(a.role) - roleRank(b.role));
 
-    // Filter out the PI so she doesn't appear twice
-    const teamMembers = d.people.filter(p => p.role !== 'Principal Investigator');
-    
-    // If true, put them in the 'Alumni' group bucket. Otherwise, group by their 'role'.
-    teamMembers.forEach(p => { 
-      const groupCategory = p.isAlumni ? 'Alumni' : p.role;
-      (groups[groupCategory] = groups[groupCategory] || []).push(p); 
-    });
-
-    $('people-container').innerHTML = ORDER.filter(r => groups[r]).map(r => `
-      <div class="people-group fade-in">
-        <div class="people-group-label">${r}</div>
-        <div class="people-grid">
-          ${groups[r].map((p, i) => {
-      const originalIndex = d.people.indexOf(p);
-      return `
-            <div class="person-card" data-person="${originalIndex}" tabindex="0" role="button" aria-label="View profile of ${p.name}">
-              <img class="person-photo" src="${p.photo}" alt="${p.name}" loading="lazy" />
-              <div class="person-info">
-                <div class="person-name">${p.name}</div>
-                <div class="person-role">${p.role}</div> 
-                
-                <div class="person-card-links">
-                  ${Object.entries(p.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
-                    <a href="${k === 'email' ? 'mailto:' + v : v}"
-                       ${k === 'email' ? '' : 'target="_blank"'}
-                       class="card-link"
-                       onclick="event.stopPropagation()">
-                      ${linkLabels[k] || k}
-                    </a>
-                  `).join('')}
-                </div>
-
-              </div>
-            </div>`
-    }).join('')}
-        </div>
-      </div>`).join('');
-
-    /* ── Person Modal (With Event Delegation) ─────────────── */
-    const overlay = $('modal-overlay');
-    const modalContent = $('modal-content');
-
-    const openModal = idx => {
-      const p = d.people[idx];
-
-      modalContent.innerHTML = `
-        <div class="modal-header">
-          <img class="modal-photo" src="${p.photo}" alt="${p.name}" />
-          <div>
-            <div class="modal-name">${p.name}</div>
-            <div class="modal-role">${p.role}</div>
+      const personCard = p => `
+        <a class="person-card" href="/people/${slugify(p.name)}" aria-label="View profile of ${p.name}">
+          <img class="person-photo" src="${abs(p.photo)}" alt="${p.name}" loading="lazy" />
+          <div class="person-info">
+            <div class="person-name">${p.name}</div>
+            <div class="person-role">${p.role}</div>
           </div>
-        </div>
-        <div class="modal-bio">${p.bio}</div>
-        <div class="modal-links">
-          ${Object.entries(p.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
-            <a class="modal-link"
-               href="${k === 'email' ? 'mailto:' + v : v}"
-               ${k === 'email' ? '' : 'target="_blank"'}>
-              ${linkLabels[k] || k}
-            </a>
-          `).join('')}
+        </a>`;
+
+      const current = byRole(d.people.filter(p => !p.isAlumni));
+      const alumni = byRole(d.people.filter(p => p.isAlumni));
+
+      const group = (label, people) => !people.length ? '' : `
+        <div class="people-group fade-in">
+          <div class="people-group-label">${label}</div>
+          <div class="people-grid">
+            ${people.map(personCard).join('')}
+          </div>
         </div>`;
-      overlay.classList.add('open');
-    };
 
-    // Listen on the main container instead of individual cards
-    $('people-container').addEventListener('click', e => {
-      const card = e.target.closest('.person-card');
-      if (card) openModal(+card.dataset.person);
-    });
-
-    // Keyboard accessibility for the cards
-    $('people-container').addEventListener('keydown', e => {
-      if (e.key === 'Enter') {
-        const card = e.target.closest('.person-card');
-        if (card) openModal(+card.dataset.person);
-      }
-    });
-
-    // Close button and overlay click logic
-    $('modal-close').addEventListener('click', () => overlay.classList.remove('open'));
-    overlay.addEventListener('click', e => e.target === overlay && overlay.classList.remove('open'));
-    document.addEventListener('keydown', e => e.key === 'Escape' && overlay.classList.remove('open'));
+      $('people-container').innerHTML = group('Current', current) + group('Alumni', alumni);
     } // end people-container guard
+
+    /* ── Person profile page (/people/<name>) ─────────────── */
+    if ($('profile-container')) {
+      // Vercel rewrites /people/<name> to this file while keeping the clean
+      // URL in the address bar, so the slug is the last path segment. Fall
+      // back to a ?name= query param for local testing without the rewrite.
+      const seg = location.pathname.split('/').filter(Boolean).pop() || '';
+      const slug = (seg && seg !== 'profile.html') ? seg : (new URLSearchParams(location.search).get('name') || '');
+      const person = d.people.find(p => slugify(p.name) === slug);
+
+      if (person) {
+        document.title = `${person.name} — ${d.lab.name}`;
+        $('profile-container').innerHTML = `
+          <div class="profile-layout fade-in">
+            <img class="profile-photo" src="${abs(person.photo)}" alt="${person.name}" loading="lazy" />
+            <div class="profile-info">
+              <h1 class="profile-name">${person.name}</h1>
+              <div class="profile-role">${person.title || person.role}</div>
+              <p class="profile-bio">${person.bio}</p>
+              <div class="profile-links">
+                ${Object.entries(person.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
+                  <a class="btn btn-outline"
+                     href="${k === 'email' ? 'mailto:' + v : v}"
+                     ${k === 'email' ? '' : 'target="_blank"'}>
+                    ${linkLabels[k] || k}
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          </div>`;
+
+        // Publications where this person appears in the authors list, matched by name.
+        const personPubs = d.publications
+          .filter(pub => pub.authors.some(a => namesMatch(a, person.name)))
+          .sort((a, b) => (b.highlight ? 1 : 0) - (a.highlight ? 1 : 0));
+
+        if ($('profile-pub-list')) {
+          if (personPubs.length) {
+            $('profile-pub-list').innerHTML = personPubs.map(p => `
+              <div class="pub-card fade-in ${p.highlight ? 'featured' : ''}">
+                ${p.image ? `
+                <div class="pub-image-wrapper">
+                  <img src="${abs(p.image)}" alt="Thumbnail for ${p.title}" class="pub-image" loading="lazy" />
+                </div>` : ''}
+                <div class="pub-info">
+                  <div class="pub-top">
+                    <div class="pub-title">${p.title}</div>
+                    ${p.highlight ? '<span class="pub-badge">Featured</span>' : ''}
+                  </div>
+                  <div class="pub-authors">${p.authors.map(a => namesMatch(a, person.name) ? `<span class="self">${a}</span>` : a).join(', ')}</div>
+                  <div class="pub-venue">${p.venue}</div>
+                  <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
+                  <div class="pub-links">
+                    ${Object.entries(p.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `<a class="pub-link" href="${v}" target="_blank">${k.charAt(0).toUpperCase() + k.slice(1)}</a>`).join('')}
+                  </div>
+                </div>
+              </div>`).join('');
+          } else if ($('profile-pubs')) {
+            $('profile-pubs').style.display = 'none';
+          }
+        }
+      } else {
+        $('profile-container').innerHTML = `<p class="hero-desc">We couldn't find that person. <a href="/people.html">Back to People</a>.</p>`;
+        if ($('profile-pubs')) $('profile-pubs').style.display = 'none';
+      }
+    } // end profile-container guard
 
     /* ── Publications ─────────────────────────────────────── */
     if ($('pub-list')) {
     let activeFilter = 'All';
-    let pubsExpanded = false;
-    const PUBS_PREVIEW = 3;
+    // ── Show-more (disabled) ───────────────────────────────
+    // let pubsExpanded = false;
+    // const PUBS_PREVIEW = 3;
     const allTags = ['All', ...new Set(d.publications.flatMap(p => p.tags))];
 
     const renderFilters = () => {
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       $('pub-filters').querySelectorAll('.filter-btn').forEach(b =>
         b.addEventListener('click', () => {
           activeFilter = b.dataset.tag;
-          pubsExpanded = false; // a new filter starts collapsed again
+          // pubsExpanded = false; // a new filter starts collapsed again — show-more disabled
           renderPubs();
           renderFilters();
         }));
@@ -209,19 +209,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Array.sort is stable, so JSON order is preserved within each group.
       const pubs = [...matching].sort((a, b) => (b.highlight ? 1 : 0) - (a.highlight ? 1 : 0));
       $('pub-list').innerHTML = pubs.map((p, i) => `
-        <div class="pub-card fade-in ${p.highlight ? 'featured' : ''} ${!pubsExpanded && i >= PUBS_PREVIEW ? 'pub-hidden' : ''}" data-pub="${i}">
-          
+        <div class="pub-card fade-in ${p.highlight ? 'featured' : ''}" data-pub="${i}">
+          <!-- show-more disabled: card used to also get 'pub-hidden' here past the preview count -->
+
           ${/* New image wrapper */ p.image ? `
           <div class="pub-image-wrapper">
-            <img src="${p.image}" alt="Thumbnail for ${p.title}" class="pub-image" loading="lazy" />
+            <img src="${abs(p.image)}" alt="Thumbnail for ${p.title}" class="pub-image" loading="lazy" />
           </div>` : ''}
-          
+
           <div class="pub-info">
             <div class="pub-top">
               <div class="pub-title">${p.title}</div>
               ${p.highlight ? '<span class="pub-badge">Featured</span>' : ''}
             </div>
-            <div class="pub-authors">${p.authors.map(a => a === PI_NAME ? `<span class="self">${a}</span>` : a).join(', ')}</div>
+            <div class="pub-authors">${p.authors.map(a => namesMatch(a, PI_NAME) ? `<span class="self">${a}</span>` : a).join(', ')}</div>
             <div class="pub-venue">${p.venue}</div>
             <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
             <div class="pub-abstract">${p.abstract}</div>
@@ -240,10 +241,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           btn.textContent = expanded ? '▾ Abstract' : '▸ Abstract';
         }));
 
-      renderPubsToggle(pubs.length);
+      // renderPubsToggle(pubs.length); // show-more disabled
       observeFadeIns();
     };
 
+    /* ── Show-more toggle (disabled) ─────────────────────────
     const renderPubsToggle = total => {
       const hiddenCount = total - PUBS_PREVIEW;
 
@@ -272,6 +274,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!pubsExpanded) $('publications').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     };
+    ── end disabled block ── */
 
     renderFilters();
     renderPubs();
@@ -279,10 +282,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── Grants ────────────────────────────────────────────── */
     if ($('grants-list')) {
-    const GRANTS_PREVIEW = 3;
+    // ── Show-more (disabled) ───────────────────────────────
+    // const GRANTS_PREVIEW = 3;
 
     $('grants-list').innerHTML = d.grants.map((g, i) => `
-      <div class="grant-card fade-in ${i >= GRANTS_PREVIEW ? 'grant-hidden' : ''}">
+      <div class="grant-card fade-in">
+        <!-- show-more disabled: card used to also get 'grant-hidden' here past the preview count -->
         <div class="grant-top">
           <div class="grant-title">${g.title}</div>
           <span class="grant-amount">${g.amount}</span>
@@ -295,6 +300,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${g.description ? `<div class="grant-desc">${g.description}</div>` : ''}
       </div>`).join('');
 
+    /* ── Show-more toggle (disabled) ─────────────────────────
     if (d.grants.length > GRANTS_PREVIEW) {
       const hiddenCount = d.grants.length - GRANTS_PREVIEW;
       let grantsExpanded = false;
@@ -321,6 +327,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!grantsExpanded) $('grants').scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
+    ── end disabled block ── */
     } // end grants-list guard
 
 
@@ -344,8 +351,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     /* ── Footer (present on every page) ────────────────────── */
     if ($('footer')) $('footer').innerHTML = `
       <div class="footer-logos">
-        <img class="footer-logo-pips" src="images/PIPS-favicons/apple-touch-icon.png" alt="PIPS Lab" loading="lazy" />
-        <img class="footer-logo-smu" src="images/smu-logo-cropped.png" alt="Singapore Management University" loading="lazy" />
+        <img class="footer-logo-pips" src="/images/PIPS-favicons/apple-touch-icon.png" alt="PIPS Lab" loading="lazy" />
+        <img class="footer-logo-smu" src="/images/smu-logo-cropped.png" alt="Singapore Management University" loading="lazy" />
       </div>
       <div>© ${new Date().getFullYear()} ${d.lab.fullName} · ${d.lab.affiliation}</div>`;
 
