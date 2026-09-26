@@ -60,9 +60,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       $('hero-tagline').textContent = d.lab.tagline;
       $('hero-desc').textContent = d.lab.description;
       $('hero-meta').innerHTML = [
-        `<span>📍 ${d.lab.location}</span>`,
+        `<span>🏛️ ${d.lab.location}</span>`,
+        `<span>📖 Est. ${d.lab.founded}</span>`,
         `<span>✉️ ${d.lab.email}</span>`,
-        `<span>Est. ${d.lab.founded}</span>`,
       ].join('');
 
       /* research themes */
@@ -80,10 +80,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       const ROLE_ORDER = [
         'Principal Investigator',
         'Research Scientist',
+        'Research Engineer',
         'PhD Candidate',
         'PhD Student',
         'Masters Student',
-        'Research Engineer',
         'Visiting Researcher',
       ];
       const roleRank = role => {
@@ -182,30 +182,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── Publications ─────────────────────────────────────── */
     if ($('pub-list')) {
-    let activeFilter = 'All';
-    // ── Show-more (disabled) ───────────────────────────────
-    // let pubsExpanded = false;
-    // const PUBS_PREVIEW = 3;
-    const allTags = ['All', ...new Set(d.publications.flatMap(p => p.tags))];
+      let activeFilter = 'All';
+      // ── Show-more (disabled) ───────────────────────────────
+      // let pubsExpanded = false;
+      // const PUBS_PREVIEW = 3;
+      const allTags = ['All', ...new Set(d.publications.flatMap(p => p.tags))];
 
-    const renderFilters = () => {
-      $('pub-filters').innerHTML = allTags.map(t => `
+      const renderFilters = () => {
+        $('pub-filters').innerHTML = allTags.map(t => `
         <button class="filter-btn ${t === activeFilter ? 'active' : ''}" data-tag="${t}">${t}</button>`).join('');
-      $('pub-filters').querySelectorAll('.filter-btn').forEach(b =>
-        b.addEventListener('click', () => {
-          activeFilter = b.dataset.tag;
-          // pubsExpanded = false; // a new filter starts collapsed again — show-more disabled
-          renderPubs();
-          renderFilters();
-        }));
-    };
+        $('pub-filters').querySelectorAll('.filter-btn').forEach(b =>
+          b.addEventListener('click', () => {
+            activeFilter = b.dataset.tag;
+            // pubsExpanded = false; // a new filter starts collapsed again — show-more disabled
+            renderPubs();
+            renderFilters();
+          }));
+      };
 
-    const renderPubs = () => {
-      const matching = activeFilter === 'All' ? d.publications : d.publications.filter(p => p.tags.includes(activeFilter));
-      // Featured papers first so they always land in the collapsed preview.
-      // Array.sort is stable, so JSON order is preserved within each group.
-      const pubs = [...matching].sort((a, b) => (b.highlight ? 1 : 0) - (a.highlight ? 1 : 0));
-      $('pub-list').innerHTML = pubs.map((p, i) => `
+      const renderPubs = () => {
+        const matching = activeFilter === 'All' ? d.publications : d.publications.filter(p => p.tags.includes(activeFilter));
+        // Featured papers first so they always land in the collapsed preview.
+        // Array.sort is stable, so JSON order is preserved within each group.
+        const pubs = [...matching].sort((a, b) => (b.highlight ? 1 : 0) - (a.highlight ? 1 : 0));
+        $('pub-list').innerHTML = pubs.map((p, i) => `
         <div class="pub-card fade-in ${p.highlight ? 'featured' : ''}" data-pub="${i}">
           <!-- show-more disabled: card used to also get 'pub-hidden' here past the preview count -->
 
@@ -231,58 +231,58 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         </div>`).join('');
 
-      $('pub-list').querySelectorAll('.pub-toggle').forEach(btn =>
-        btn.addEventListener('click', () => {
-          const card = btn.closest('.pub-card');
-          const expanded = card.classList.toggle('expanded');
-          btn.textContent = expanded ? '▾ Abstract' : '▸ Abstract';
-        }));
+        $('pub-list').querySelectorAll('.pub-toggle').forEach(btn =>
+          btn.addEventListener('click', () => {
+            const card = btn.closest('.pub-card');
+            const expanded = card.classList.toggle('expanded');
+            btn.textContent = expanded ? '▾ Abstract' : '▸ Abstract';
+          }));
 
-      // renderPubsToggle(pubs.length); // show-more disabled
-      observeFadeIns();
-    };
+        // renderPubsToggle(pubs.length); // show-more disabled
+        observeFadeIns();
+      };
 
-    /* ── Show-more toggle (disabled) ─────────────────────────
-    const renderPubsToggle = total => {
-      const hiddenCount = total - PUBS_PREVIEW;
-
-      if (hiddenCount <= 0) {
-        $('pub-more').innerHTML = '';
-        return;
-      }
-
-      $('pub-more').innerHTML = `
-        <button class="grants-toggle" id="pub-more-btn" aria-expanded="${pubsExpanded}" aria-controls="pub-list">
-          ${pubsExpanded ? 'Show less ▴' : `Show ${hiddenCount} more ▾`}
-        </button>`;
-
-      $('pub-more-btn').addEventListener('click', () => {
-        pubsExpanded = !pubsExpanded;
-
-        $('pub-list').querySelectorAll('.pub-card').forEach((card, i) => {
-          if (i < PUBS_PREVIEW) return;
-          card.classList.toggle('pub-hidden', !pubsExpanded);
-          if (pubsExpanded) card.classList.add('visible');
+      /* ── Show-more toggle (disabled) ─────────────────────────
+      const renderPubsToggle = total => {
+        const hiddenCount = total - PUBS_PREVIEW;
+  
+        if (hiddenCount <= 0) {
+          $('pub-more').innerHTML = '';
+          return;
+        }
+  
+        $('pub-more').innerHTML = `
+          <button class="grants-toggle" id="pub-more-btn" aria-expanded="${pubsExpanded}" aria-controls="pub-list">
+            ${pubsExpanded ? 'Show less ▴' : `Show ${hiddenCount} more ▾`}
+          </button>`;
+  
+        $('pub-more-btn').addEventListener('click', () => {
+          pubsExpanded = !pubsExpanded;
+  
+          $('pub-list').querySelectorAll('.pub-card').forEach((card, i) => {
+            if (i < PUBS_PREVIEW) return;
+            card.classList.toggle('pub-hidden', !pubsExpanded);
+            if (pubsExpanded) card.classList.add('visible');
+          });
+  
+          renderPubsToggle(total);
+  
+          // Collapsing can leave the viewport below the section — pull it back into view
+          if (!pubsExpanded) $('publications').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
+      };
+      ── end disabled block ── */
 
-        renderPubsToggle(total);
-
-        // Collapsing can leave the viewport below the section — pull it back into view
-        if (!pubsExpanded) $('publications').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    };
-    ── end disabled block ── */
-
-    renderFilters();
-    renderPubs();
+      renderFilters();
+      renderPubs();
     } // end pub-list guard
 
     /* ── Grants ────────────────────────────────────────────── */
     if ($('grants-list')) {
-    // ── Show-more (disabled) ───────────────────────────────
-    // const GRANTS_PREVIEW = 3;
+      // ── Show-more (disabled) ───────────────────────────────
+      // const GRANTS_PREVIEW = 3;
 
-    $('grants-list').innerHTML = d.grants.map((g, i) => `
+      $('grants-list').innerHTML = d.grants.map((g, i) => `
       <div class="grant-card fade-in">
         <!-- show-more disabled: card used to also get 'grant-hidden' here past the preview count -->
         <div class="grant-top">
@@ -297,42 +297,42 @@ document.addEventListener('DOMContentLoaded', async () => {
         ${g.description ? `<div class="grant-desc">${g.description}</div>` : ''}
       </div>`).join('');
 
-    /* ── Show-more toggle (disabled) ─────────────────────────
-    if (d.grants.length > GRANTS_PREVIEW) {
-      const hiddenCount = d.grants.length - GRANTS_PREVIEW;
-      let grantsExpanded = false;
-
-      $('grants-more').innerHTML = `
-        <button class="grants-toggle" id="grants-toggle" aria-expanded="false" aria-controls="grants-list">
-          Show ${hiddenCount} more ▾
-        </button>`;
-
-      $('grants-toggle').addEventListener('click', () => {
-        grantsExpanded = !grantsExpanded;
-        const btn = $('grants-toggle');
-
-        $('grants-list').querySelectorAll('.grant-card').forEach((card, i) => {
-          if (i < GRANTS_PREVIEW) return;
-          card.classList.toggle('grant-hidden', !grantsExpanded);
-          if (grantsExpanded) card.classList.add('visible');
+      /* ── Show-more toggle (disabled) ─────────────────────────
+      if (d.grants.length > GRANTS_PREVIEW) {
+        const hiddenCount = d.grants.length - GRANTS_PREVIEW;
+        let grantsExpanded = false;
+  
+        $('grants-more').innerHTML = `
+          <button class="grants-toggle" id="grants-toggle" aria-expanded="false" aria-controls="grants-list">
+            Show ${hiddenCount} more ▾
+          </button>`;
+  
+        $('grants-toggle').addEventListener('click', () => {
+          grantsExpanded = !grantsExpanded;
+          const btn = $('grants-toggle');
+  
+          $('grants-list').querySelectorAll('.grant-card').forEach((card, i) => {
+            if (i < GRANTS_PREVIEW) return;
+            card.classList.toggle('grant-hidden', !grantsExpanded);
+            if (grantsExpanded) card.classList.add('visible');
+          });
+  
+          btn.textContent = grantsExpanded ? 'Show less ▴' : `Show ${hiddenCount} more ▾`;
+          btn.setAttribute('aria-expanded', String(grantsExpanded));
+  
+          // Collapsing can leave the viewport below the section — pull it back into view
+          if (!grantsExpanded) $('grants').scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
-
-        btn.textContent = grantsExpanded ? 'Show less ▴' : `Show ${hiddenCount} more ▾`;
-        btn.setAttribute('aria-expanded', String(grantsExpanded));
-
-        // Collapsing can leave the viewport below the section — pull it back into view
-        if (!grantsExpanded) $('grants').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-    ── end disabled block ── */
+      }
+      ── end disabled block ── */
     } // end grants-list guard
 
 
     /* ── News ─────────────────────────────────────────────── */
     if ($('news-list')) {
-    const sortedNews = d.news.sort((a, b) => new Date(b.date) - new Date(a.date));
+      const sortedNews = d.news.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    $('news-list').innerHTML = sortedNews.map(n => `
+      $('news-list').innerHTML = sortedNews.map(n => `
       <div class="news-item fade-in">
         <div class="news-date-col">
           <div class="news-date">${fmt(n.date)}</div>
