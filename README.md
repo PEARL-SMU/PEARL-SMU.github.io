@@ -4,10 +4,11 @@ This repository contains the front-end source code for the lab's website. It's a
 
 ## 📁 Project Structure
 
-* `index.html`: Home — hero intro (`#home`), then a "What We Study" research-themes grid (`#research`, from `themes.json`), then a portal grid linking to the other pages (`#explore`).
+* `index.html`: Home — hero intro (`#home`), then a "What We Study" research-themes grid (`#research`, from `themes.json`), then an "Around the Lab" portal grid (`#explore`) with hard-coded cards for Research, People, Publications, and Grants. News isn't a card there; it's reachable from the nav only. Each research-theme card links to its section on `research.html`.
 * `people.html`: Two flat grids — Current and Alumni — with everyone (including the PI) shown the same way: photo, name, role, no grouping by role and no link buttons on the card itself.
 * `people/profile.html`: One shared template that renders whichever person the URL points at. See below.
 * `publications.html`: Recent Publications, with tag filtering.
+* `research.html`: Expanded research themes (from `themes.json`), each with its related publications.
 * `grants.html`: Grants and funding.
 * `news.html`: News.
 * `styles.css`: Contains the "PIPS Lab Light Theme" styling (white body, navy header/footer — see [Customization](#-customization) below), including responsive layouts, CSS variables for theming, and scroll animations.
@@ -18,7 +19,7 @@ This repository contains the front-end source code for the lab's website. It's a
 * `lib/seo-helpers.js`: Small helpers shared by the three functions above (`slugify`, HTML-escaping, etc.). Deliberately kept *outside* `api/` — anything directly under `api/` becomes a public route on Vercel, and this file isn't meant to be one.
 * `vercel.json`: The three rewrite rules that make `/people/<name>`, `/sitemap.xml`, and `/robots.txt` work. Don't delete it.
 
-To add a new page, copy the `<nav>` and `<footer>` markup from an existing page, mark the matching `.nav-link` as `active`, and reuse `script.js` as-is — it only touches elements that are actually present on the page. **Every internal `href`/`src` in the `<head>` and `<nav>` is root-absolute** (e.g. `/styles.css`, `/people.html`, not `styles.css`), including in `script.js`'s own `fetch()` calls and dynamically-generated image tags — this is what lets `people/profile.html`, which lives one directory deeper than everything else, share the exact same markup and script as the rest of the site. Keep new pages consistent with that (don't switch back to bare relative paths).
+To add a new page, copy the `<nav>` and `<footer>` markup from an existing page, mark the matching `.nav-link` as `active`, and reuse `script.js` as-is — it only touches elements that are actually present on the page. The nav is duplicated in every HTML file, so a new link has to be added to all of them, **including `people/profile.html`**; also add the page to `STATIC_PATHS` in `api/sitemap.js` so it's listed in the sitemap. **Every internal `href`/`src` in the `<head>` and `<nav>` is root-absolute** (e.g. `/styles.css`, `/people.html`, not `styles.css`), including in `script.js`'s own `fetch()` calls and dynamically-generated image tags — this is what lets `people/profile.html`, which lives one directory deeper than everything else, share the exact same markup and script as the rest of the site. Keep new pages consistent with that (don't switch back to bare relative paths).
 
 ## 👤 Person profile pages (`/people/<name>`)
 
@@ -74,7 +75,7 @@ Then open `http://localhost:8000` (or whatever port `vercel dev` prints, typical
 **Debugging tips:**
 * Open the browser DevTools **Console** first — `script.js` logs a single error there ("Failed to load lab data...") if any of the six JSON files under `data/` fail to fetch or fail to parse; that's almost always a JSON syntax error (trailing comma, missing quote) in the file you just edited.
 * Check the **Network** tab for any request to `/data/*.json` or `/images/*` returning 404 — since every path in this repo is root-absolute, a 404 there usually means the server isn't running from the repo root, or a typo in a JSON `photo`/`image` path.
-* A blank content section with no console error usually means that JSON file's array is genuinely empty, or every entry got filtered out by something field-specific — e.g. a publication whose `tags` array is empty won't show up under any filter button except "All." It's rarely a crash; check the actual JSON content against the field-by-field behavior documented below rather than assuming something broke.
+* A blank content section with no console error usually means that JSON file's array is genuinely empty, or every entry got filtered out by something field-specific — e.g. a publication whose `keywords` arrays are both empty won't show up under any filter button except "All." It's rarely a crash; check the actual JSON content against the field-by-field behavior documented below rather than assuming something broke.
 
 ## 📦 Deploying / Publishing Updates
 
@@ -104,14 +105,18 @@ Everyone in this array — including the Principal Investigator — is split int
   People who share a role keep their relative order from the JSON array. A `role` string that isn't in this list still displays fine — it just sorts after everyone whose role is listed. To change the ordering (e.g. add a new role at a specific rank), edit the `ROLE_ORDER` array in `script.js`, not this file.
 * **`title` (optional):** A longer title shown on the person's profile page instead of `role` (the card still shows `role`). Used for the PI's "Assistant Professor of Computer Science, ResWORK Fellow" — add it to anyone else who needs a fuller title on their own page without changing what their card says.
 * **`photo`:** A path to an image, relative to the repo root — e.g. `"images/people/gevindu.jpg"` (existing photos live in `images/people/`; drop a new file there and point to it, any common format works — `.jpg`, `.jpeg`, `.png`, and `.avif` are all in use already). Displayed cropped to a square (`object-fit: cover`) both on the card and on the profile page, so a roughly-square headshot crops best; a wide or tall photo will get cropped at the sides/top-bottom.
+* **`research` (optional):** An array of theme `title`s from `themes.json` (same matching rule as a paper's `keywords.research`), e.g. `["EdTech", "Multi-Agent Systems"]`. Shown as linked chips under the role on the person's profile page, and lists them (photo + name, linking to their profile) in the "People" row of each matching area on `research.html`. The PI deliberately has none. Omit it or use `[]` and nothing is shown.
 * **`bio`:** Plain text, shown on the profile page only (not on the card). `""` is fine for someone without a bio yet — their profile page just shows an empty space where it would go, nothing breaks.
 * **`links`:** An object. Any key works, but only five get a matching icon (via `linkLabels` in `script.js`): `website`, `scholar`, `twitter`, `github`, `email`. Anything else falls back to showing the raw key name as plain text. To hide a link entirely (no button at all) rather than show a broken one, set its value to `null`, `""`, or `"#"` — all three are treated as "no link."
 * **Profile page:** Every card — PI included — links to `/people/<slugified-name>`. See [Person profile pages](#-person-profile-pages-peoplename) above. The link buttons live there, not on the card.
 
 ### 2. Publications (`publications.json`)
-Every field, `title`/`authors`/`venue`/`tags`/`highlight`/`image`/`abstract`/`links` — except `year` (see below) — is used somewhere:
+Every field, `title`/`authors`/`venue`/`keywords`/`highlight`/`image`/`abstract`/`links` — except `year` (see below) — is used somewhere:
 * **`authors`:** An array of plain name strings, shown as-is (joined by commas) — no one's name is specially highlighted on `publications.html`. This same array is also what a person's profile page scans to find their own publications (matching by name — see `namesMatch()` under [Person profile pages](#-person-profile-pages-peoplename)), so a name here needs to be spellable-back to a `people.json` entry (honorifics like "Dr." are stripped automatically before comparing, so those don't need to match).
-* **`tags`:** An array of strings. The filter buttons at the top of `publications.html` are generated dynamically from every unique tag across all publications — add a new tag string to a paper and a new filter button appears automatically, no other change needed.
+* **`keywords`:** An object with two arrays, e.g. `{ "research": ["EdTech", "Multi-Agent Systems"], "additional": ["Large language models"] }`.
+  * **`research`** — the lab research area(s) the paper belongs to. Each entry must be a theme `title` from `themes.json` (matched case-insensitively). Can be `[]`. These show as accent-coloured chips linking to that theme on `research.html`, drive the "Related publications" list on the Research page, and get their own "Research area" filter row on `publications.html` (in `themes.json` order, only for areas that have at least one paper). A misspelt title still shows as a chip but won't link or appear on the Research page.
+  * **`additional`** — free-form, paper-specific keywords. Shown as plain chips and collected into the "Keywords" filter row — add a new string and a new filter button appears automatically.
+  * `publications.html?research=<theme id>` opens the page with that research area pre-selected; the Research page links there.
 * **`highlight`:** `true` gives the paper a "Featured" badge and a gold left border, and sorts it to the top of the list (and to the top of that person's list on their own profile page, if they're a co-author).
 * **`image` (optional):** A path to a thumbnail, relative to the repo root — e.g. `"images/publications/ICML26.png"` (existing thumbnails live in `images/publications/`). Omit the field (or leave it falsy) and the card just renders without an image slot, no broken-image icon.
 * **`abstract`:** Plain text, hidden by default behind a "▸ Abstract" toggle button under each card — click it to expand/collapse. This per-card toggle is a separate feature from the (now-disabled) "show N more" list-collapsing — see the code comments in `script.js` if you ever want to re-enable that one.
@@ -122,6 +127,7 @@ Every field, `title`/`authors`/`venue`/`tags`/`highlight`/`image`/`abstract`/`li
 This section displays the lab's current and past funding.
 * **Data Fields:** Each grant object displays the `title`, `amount`, `role` (e.g., PI, Co-PI), `funder`, and `period`.
 * **Optional Descriptions:** You can include an optional `description` string to provide a brief summary of the project. If omitted, the grant card will simply condense its layout to fit the available metadata.
+* **Layout:** The `amount` badge is always pinned to the card's top-right corner; a long `title` wraps onto more lines beside it rather than pushing the amount down.
 
 ### 4. News Updates (`news.json`)
 * **`date`:** Controls both the displayed date *and* the sort order — items are always shown newest-first, regardless of their order in the JSON array. Use an ISO date like `"2026-08-14"` for a specific day, or just a bare 4-character year string like `"2024"` if you only know the year (it's then shown as-is instead of being reformatted). Other formats are parsed with JavaScript's `Date` constructor, which is inconsistent across formats — stick to one of the two above.
@@ -144,7 +150,9 @@ This section displays the lab's current and past funding.
 * **`twitter`**, **`github`** → currently unused by any rendering. They're placeholder fields (`"#"`) for a future social-links row that hasn't been built; editing them won't change anything visible today.
 * There is **no field that sets a nav-bar text label** — the nav only shows the logo image now, no lab name text next to it.
 
-`themes.json` populates the "What We Study" grid in its own section on the Home page (`#research`, between the hero and the "Around the Lab" portal grid) — not inside the hero itself. Each entry is `{ icon, title, text }`; `icon` is rendered as-is (raw text/emoji/unicode symbol, not an icon font name), so paste a character like `◇` directly rather than a class name.
+`themes.json` populates the "What We Study" grid in its own section on the Home page (`#research`, between the hero and the "Around the Lab" portal grid) — not inside the hero itself. Each entry is `{ id, icon, title, text, description }`; `icon` is rendered as-is (raw text/emoji/unicode symbol, not an icon font name), so paste a character like `◇` directly rather than a class name. Each home-page card links to `research.html#<id>`.
+
+`research.html` renders the same entries expanded: `title`, `text`, and the longer `description`, a "People" row of everyone whose `research` array in `people.json` contains that theme's `title` (current members before alumni), and a "Related publications" list of every paper whose `keywords.research` contains it. Either list is hidden when empty. Renaming a theme's `title` means updating the matching `research` entries in `people.json` and `keywords.research` entries in `publications.json` too; `id` is only used in URLs, so changing it breaks existing `#` links but nothing else.
 
 ## 🎨 Customization
 

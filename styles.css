@@ -347,6 +347,137 @@ a.theme-card:hover {
   line-height: 1.6;
 }
 
+/* ── Research page ─────────────────────────────────────── */
+
+.research-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.research-theme {
+  padding: 1.75rem;
+  background: var(--paper2);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  /* Keep the anchor target clear of the fixed nav when jumping from the home page */
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+}
+
+.research-head {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: .5rem;
+}
+
+.research-head .theme-icon {
+  margin-bottom: 0;
+}
+
+.research-title {
+  font-family: var(--ff-serif);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.research-summary {
+  font-size: .95rem;
+  color: var(--ink2);
+  margin-bottom: .75rem;
+}
+
+.research-desc {
+  font-size: .9rem;
+  color: var(--ink3);
+  line-height: 1.7;
+}
+
+.research-people {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.research-people-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem 1.25rem;
+}
+
+.research-person {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .88rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.research-person:hover {
+  color: var(--accent);
+}
+
+.research-person img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+.research-pubs {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.research-pubs-label {
+  font-family: var(--ff-mono);
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: .5rem;
+}
+
+.research-pubs ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.research-pubs a {
+  font-size: .88rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.research-pubs a:hover {
+  color: var(--accent);
+}
+
+.research-pubs .research-pubs-all {
+  display: inline-block;
+  margin-top: .75rem;
+  font-family: var(--ff-mono);
+  font-size: .75rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.research-pubs .research-pubs-all:hover {
+  text-decoration: underline;
+}
+
+.research-pub-venue {
+  font-size: .78rem;
+  color: var(--ink3);
+  font-family: var(--ff-mono);
+}
+
 /* ── People ────────────────────────────────────────────── */
 
 .people-group {
@@ -419,8 +550,8 @@ a.theme-card:hover {
 
 .pub-filters {
   display: flex;
-  flex-wrap: wrap;
-  gap: .5rem;
+  flex-direction: column;
+  gap: .75rem;
   margin-bottom: 2rem;
 }
 
@@ -435,6 +566,22 @@ a.theme-card:hover {
   color: var(--ink3);
   cursor: pointer;
   transition: all .15s;
+}
+
+.pub-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+
+.pub-filter-label {
+  font-family: var(--ff-mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-right: .25rem;
 }
 
 .filter-btn.active,
@@ -586,6 +733,17 @@ a.theme-card:hover {
   border-radius: 999px;
   color: var(--ink3);
   font-family: var(--ff-mono);
+}
+
+/* Research-area keywords — accent-tinted and linked to the theme on /research.html */
+.pub-tag-research {
+  background: rgba(63, 91, 224, .1);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a.pub-tag-research:hover {
+  background: rgba(63, 91, 224, .18);
 }
 
 .pub-abstract {
@@ -833,6 +991,13 @@ footer a {
   margin-bottom: 1.75rem;
 }
 
+.profile-research {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: -0.75rem 0 1.75rem;
+}
+
 .profile-links {
   display: flex;
   flex-wrap: wrap;
@@ -848,7 +1013,8 @@ footer a {
 }
 
 @media (max-width: 768px) {
-  .profile-links {
+  .profile-links,
+  .profile-research {
     justify-content: center;
   }
 }
@@ -890,11 +1056,13 @@ footer a {
   justify-content: space-between;
   align-items: flex-start;
   gap: 1rem;
-  flex-wrap: wrap;
   margin-bottom: 0.75rem;
 }
 
+/* Title takes the remaining width and wraps; the amount never shrinks, so it stays top-right */
 .grant-title {
+  flex: 1;
+  min-width: 0;
   font-weight: 500;
   font-size: 1.1rem;
   line-height: 1.4;
@@ -911,6 +1079,7 @@ footer a {
   background: rgba(14, 138, 156, 0.1);
   border-radius: 4px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .grant-details {

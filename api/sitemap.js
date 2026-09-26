@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { slugify, baseUrl } = require('../lib/seo-helpers');
 
-const STATIC_PATHS = ['/', '/people.html', '/publications.html', '/grants.html', '/news.html'];
+const STATIC_PATHS = ['/', '/research.html', '/people.html', '/publications.html', '/grants.html', '/news.html'];
 
 module.exports = (req, res) => {
   try {

@@ -30,6 +30,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     // author strings don't ("Thivya Kandappu") — strip it so the two sides still match.
     const stripTitle = name => name.replace(/^(dr|prof|professor)\.?\s+/i, '').trim().toLowerCase();
     const namesMatch = (a, b) => stripTitle(a) === stripTitle(b);
+    // A paper's keywords.research lists theme titles from themes.json; keywords.additional
+    // is free-form, paper-specific. Research keywords link through to that theme on /research.html.
+    const themeByTitle = title => d.themes.find(t => t.title.toLowerCase() === title.toLowerCase());
+    const pubKeywords = p => ({ research: p.keywords?.research || [], additional: p.keywords?.additional || [] });
+    // people.json entries carry the same kind of theme titles in their own `research` array.
+    const researchChip = r => {
+      const t = themeByTitle(r);
+      return t
+        ? `<a class="pub-tag pub-tag-research" href="/research.html#${t.id}">${r}</a>`
+        : `<span class="pub-tag pub-tag-research">${r}</span>`;
+    };
+    const keywordChips = p => {
+      const { research, additional } = pubKeywords(p);
+      return [
+        ...research.map(researchChip),
+        ...additional.map(k => `<span class="pub-tag">${k}</span>`)
+      ].join('');
+    };
     const fmt = iso => {
       if (!iso) return '';
       // If the date is just a 4-digit year, return the year directly
@@ -67,12 +85,56 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       /* research themes */
       $('themes-grid').innerHTML = d.themes.map(t => `
-        <div class="theme-card fade-in">
+        <a class="theme-card fade-in" href="/research.html#${t.id}">
           <div class="theme-icon">${t.icon}</div>
           <div class="theme-title">${t.title}</div>
           <div class="theme-text">${t.text}</div>
-        </div>`).join('');
+        </a>`).join('');
     }
+
+    /* ── Research page (expanded themes + related publications) ── */
+    if ($('research-list')) {
+      $('research-list').innerHTML = d.themes.map(t => {
+        // Papers whose keywords.research names this theme.
+        const pubs = d.publications.filter(p => pubKeywords(p).research.some(r => r.toLowerCase() === t.title.toLowerCase()));
+        // People whose own `research` array names this theme (current members first).
+        const members = d.people
+          .filter(p => (p.research || []).some(r => r.toLowerCase() === t.title.toLowerCase()))
+          .sort((a, b) => (a.isAlumni ? 1 : 0) - (b.isAlumni ? 1 : 0));
+        return `
+        <article class="research-theme fade-in" id="${t.id}">
+          <div class="research-head">
+            <div class="theme-icon">${t.icon}</div>
+            <h3 class="research-title">${t.title}</h3>
+          </div>
+          <p class="research-summary">${t.text}</p>
+          <p class="research-desc">${t.description || ''}</p>
+          ${members.length ? `
+          <div class="research-people">
+            <div class="research-pubs-label">People</div>
+            <div class="research-people-list">
+              ${members.map(p => `
+              <a class="research-person" href="/people/${slugify(p.name)}">
+                <img src="${abs(p.photo)}" alt="" loading="lazy" />
+                <span>${p.name}</span>
+              </a>`).join('')}
+            </div>
+          </div>` : ''}
+          ${pubs.length ? `
+          <div class="research-pubs">
+            <div class="research-pubs-label">Related publications</div>
+            <ul>
+              ${pubs.map(p => `<li><a href="/publications.html?research=${t.id}">${p.title}</a> <span class="research-pub-venue">${p.venue}</span></li>`).join('')}
+            </ul>
+            <a class="research-pubs-all" href="/publications.html?research=${t.id}">View on Publications →</a>
+          </div>` : ''}
+        </article>`;
+      }).join('');
+
+      // The list is rendered after load, so the browser's own #hash jump has already
+      // missed its target — redo it now that the section exists.
+      if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
+    } // end research-list guard
 
     /* ── People (current + alumni, each a flat grid, seniority-sorted) ── */
     if ($('people-container')) {
@@ -132,6 +194,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             <img class="profile-photo" src="${abs(person.photo)}" alt="${person.name}" loading="lazy" />
             <h1 class="profile-name">${person.name}</h1>
             <div class="profile-role">${person.title || person.role}</div>
+            ${(person.research || []).length ? `
+            <div class="profile-research">${person.research.map(researchChip).join('')}</div>` : ''}
             <div class="profile-links">
               ${Object.entries(person.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `
                 <a class="btn btn-outline"
@@ -164,7 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   </div>
                   <div class="pub-authors">${p.authors.map(a => namesMatch(a, person.name) ? `<span class="self">${a}</span>` : a).join(', ')}</div>
                   <div class="pub-venue">${p.venue}</div>
-                  <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
+                  <div class="pub-tags">${keywordChips(p)}</div>
                   <div class="pub-links">
                     ${Object.entries(p.links || {}).filter(([, v]) => v && v !== '#').map(([k, v]) => `<a class="pub-link" href="${v}" target="_blank">${k.charAt(0).toUpperCase() + k.slice(1)}</a>`).join('')}
                   </div>
@@ -182,18 +246,44 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     /* ── Publications ─────────────────────────────────────── */
     if ($('pub-list')) {
-      let activeFilter = 'All';
+      // Filters come in two rows — research areas and additional keywords — sharing one
+      // active selection: null for "All", otherwise { kind: 'research' | 'additional', value }.
+      let activeFilter = null;
       // ── Show-more (disabled) ───────────────────────────────
       // let pubsExpanded = false;
       // const PUBS_PREVIEW = 3;
-      const allTags = ['All', ...new Set(d.publications.flatMap(p => p.tags))];
+      const usedResearch = new Set(d.publications.flatMap(p => pubKeywords(p).research.map(r => r.toLowerCase())));
+      // Research areas follow themes.json order; only areas with at least one paper get a button.
+      const researchFilters = d.themes.map(t => t.title).filter(title => usedResearch.has(title.toLowerCase()));
+      const additionalFilters = [...new Set(d.publications.flatMap(p => pubKeywords(p).additional))];
+
+      // /publications.html?research=<theme id> (linked from the Research page) preselects that area.
+      const preset = d.themes.find(t => t.id === new URLSearchParams(location.search).get('research'));
+      if (preset) activeFilter = { kind: 'research', value: preset.title };
+
+      const isActive = (kind, value) =>
+        kind === 'all' ? !activeFilter : activeFilter?.kind === kind && activeFilter.value === value;
+      const filterBtn = (kind, value, label = value) =>
+        `<button class="filter-btn ${isActive(kind, value) ? 'active' : ''}" data-kind="${kind}" data-value="${value}">${label}</button>`;
 
       const renderFilters = () => {
-        $('pub-filters').innerHTML = allTags.map(t => `
-        <button class="filter-btn ${t === activeFilter ? 'active' : ''}" data-tag="${t}">${t}</button>`).join('');
+        $('pub-filters').innerHTML = `
+          <div class="pub-filter-row">
+            ${filterBtn('all', '', 'All')}
+          </div>
+          ${researchFilters.length ? `
+          <div class="pub-filter-row">
+            <span class="pub-filter-label">Research area</span>
+            ${researchFilters.map(v => filterBtn('research', v)).join('')}
+          </div>` : ''}
+          ${additionalFilters.length ? `
+          <div class="pub-filter-row">
+            <span class="pub-filter-label">Keywords</span>
+            ${additionalFilters.map(v => filterBtn('additional', v)).join('')}
+          </div>` : ''}`;
         $('pub-filters').querySelectorAll('.filter-btn').forEach(b =>
           b.addEventListener('click', () => {
-            activeFilter = b.dataset.tag;
+            activeFilter = b.dataset.kind === 'all' ? null : { kind: b.dataset.kind, value: b.dataset.value };
             // pubsExpanded = false; // a new filter starts collapsed again — show-more disabled
             renderPubs();
             renderFilters();
@@ -201,7 +291,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       };
 
       const renderPubs = () => {
-        const matching = activeFilter === 'All' ? d.publications : d.publications.filter(p => p.tags.includes(activeFilter));
+        const matching = !activeFilter ? d.publications
+          : d.publications.filter(p => pubKeywords(p)[activeFilter.kind].includes(activeFilter.value));
         // Featured papers first so they always land in the collapsed preview.
         // Array.sort is stable, so JSON order is preserved within each group.
         const pubs = [...matching].sort((a, b) => (b.highlight ? 1 : 0) - (a.highlight ? 1 : 0));
@@ -221,7 +312,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
             <div class="pub-authors">${p.authors.join(', ')}</div>
             <div class="pub-venue">${p.venue}</div>
-            <div class="pub-tags">${p.tags.map(t => `<span class="pub-tag">${t}</span>`).join('')}</div>
+            <div class="pub-tags">${keywordChips(p)}</div>
             <div class="pub-abstract">${p.abstract}</div>
             <button class="pub-toggle" data-pub="${i}">▸ Abstract</button>
             <div class="pub-links">

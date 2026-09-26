@@ -1,22 +1,30 @@
 [
   {
-    "icon": "◇",
-    "title": "Human-AI Collaboration",
-    "text": "Building tools that augment human decision-making rather than replace it."
-  },
-  {
+    "id": "neuromorphic-computing",
     "icon": "◉",
+    "title": "Neuromorphic Computing",
+    "text": "Brain-inspired, event-driven sensing and learning for fast, efficient perception.",
+    "description": "Neuromorphic event cameras report per-pixel intensity changes asynchronously with sub-microsecond latency. That makes them well suited to perceiving fast, fine-grained motion on low power budgets. We develop algorithms that work natively on event streams instead of converting them back into conventional frames, including adaptive event slicing and unsupervised spatio-temporal graph clustering. Eye tracking is our main testbed. We have built low-latency pupil tracking, released in-the-wild near-eye event datasets collected on head-mounted devices, and shown that micro-scale pupillary motion can serve as a biometric signature. Applications include cognitive modelling, user authentication, and foveated rendering for AR/VR."
+  },
+  {
+    "id": "multi-agent-systems",
+    "icon": "◇",
     "title": "Multi-Agent Systems",
-    "text": "Designing agents that communicate, negotiate, and cooperate in complex human-centric environments."
+    "text": "LLM-powered agents that reason, coordinate, and act alongside people.",
+    "description": "We design agentic systems built on large language models that plan, communicate, and cooperate, both with each other and with the people they serve. Our work looks at how agents can turn unstructured knowledge into executable, stateful models, keep a shared understanding of an evolving environment, and adapt their behaviour using multimodal signals about the user. We are particularly interested in human-centred settings such as tutoring and interactive simulation. In those settings agents need to stay consistent over long interactions and remain responsive to the person in the loop."
   },
   {
-    "icon": "◈",
-    "title": "Virtual Reality",
-    "text": "Exloring educational content in an immersive environment."
-  },
-  {
+    "id": "edtech",
     "icon": "◎",
-    "title": "Cognitive Evaluation",
-    "text": "Developing robust benchmarks grounded in cognitive science to assess AI behaviour."
+    "title": "EdTech",
+    "text": "Adaptive, embodied, and immersive technologies for learning and skill development.",
+    "description": "We build learning technologies that respond to the learner. One line of work compiles conceptual content, such as text, diagrams, and structured explanations, into interactive simulations and XR environments that learners can explore and manipulate, adapting through multimodal sensing. Another line looks at embodied skill learning. Our CHI system Motus scaffolds the motor fluency behind expressive digital drawing through structured practice, expert-referenced feedback, and ideation prompts. Across both, we combine sensing such as eye tracking and EEG with adaptive teaching strategies, and we evaluate what actually improves engagement and learning outcomes."
+  },
+  {
+    "id": "wearable-health-sensing",
+    "icon": "◈",
+    "title": "Wearable Health Sensing",
+    "text": "Robust physiological sensing from wearables in real-world, high-motion conditions.",
+    "description": "Wrist-worn sensors promise continuous health monitoring, but signals such as photoplethysmography (PPG) degrade badly under motion. We develop learning methods that stay accurate outside the lab. One example is bilateral models that combine both wrists through signal-quality-aware gating and cross-wrist attention. Another is knowledge distillation that transfers what those models learn into a single-wrist model cheap enough to deploy. Our work spans data collection with clinical ground truth, biosignal processing, and interpretable, edge-deployable models for everyday wearable health."
   }
 ]
