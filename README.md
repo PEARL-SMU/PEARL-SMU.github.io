@@ -4,11 +4,11 @@ This repository contains the front-end source code for the lab's website. It's a
 
 ## 📁 Project Structure
 
-* `index.html`: Home — hero intro (`#home`), then a "What We Study" research-themes grid (`#research`, from `themes.json`), then an "Around the Lab" portal grid (`#explore`) with hard-coded cards for Research, People, Publications, and Grants. News isn't a card there; it's reachable from the nav only. Each research-theme card links to its section on `research.html`.
+* `index.html`: Home — hero intro (`#home`), then a "What We Study" research-themes grid (`#research`, from `themes.json`), then an "Around the Lab" portal grid (`#explore`) with hard-coded cards for People, Publications, Grants, and News. Research isn't a card there, since the research-themes grid right above already links into it. Each research-theme card links to its section on `research.html`.
+* `research.html`: Expanded research themes (from `themes.json`), each with the people working on it and its related publications.
+* `publications.html`: Publications, filterable by research area or by paper-specific keyword (see [Publications](#2-publications-publicationsjson) below).
 * `people.html`: Two flat grids — Current and Alumni — with everyone (including the PI) shown the same way: photo, name, role, no grouping by role and no link buttons on the card itself.
 * `people/profile.html`: One shared template that renders whichever person the URL points at. See below.
-* `publications.html`: Recent Publications, with tag filtering.
-* `research.html`: Expanded research themes (from `themes.json`), each with its related publications.
 * `grants.html`: Grants and funding.
 * `news.html`: News.
 * `styles.css`: Contains the "PIPS Lab Light Theme" styling (white body, navy header/footer — see [Customization](#-customization) below), including responsive layouts, CSS variables for theming, and scroll animations.
@@ -19,7 +19,7 @@ This repository contains the front-end source code for the lab's website. It's a
 * `lib/seo-helpers.js`: Small helpers shared by the three functions above (`slugify`, HTML-escaping, etc.). Deliberately kept *outside* `api/` — anything directly under `api/` becomes a public route on Vercel, and this file isn't meant to be one.
 * `vercel.json`: The three rewrite rules that make `/people/<name>`, `/sitemap.xml`, and `/robots.txt` work. Don't delete it.
 
-To add a new page, copy the `<nav>` and `<footer>` markup from an existing page, mark the matching `.nav-link` as `active`, and reuse `script.js` as-is — it only touches elements that are actually present on the page. The nav is duplicated in every HTML file, so a new link has to be added to all of them, **including `people/profile.html`**; also add the page to `STATIC_PATHS` in `api/sitemap.js` so it's listed in the sitemap. **Every internal `href`/`src` in the `<head>` and `<nav>` is root-absolute** (e.g. `/styles.css`, `/people.html`, not `styles.css`), including in `script.js`'s own `fetch()` calls and dynamically-generated image tags — this is what lets `people/profile.html`, which lives one directory deeper than everything else, share the exact same markup and script as the rest of the site. Keep new pages consistent with that (don't switch back to bare relative paths).
+The nav bar's tab order is Home, Research, Publications, People, Grants, News (the order of the page list above). To add a new page, copy the `<nav>` and `<footer>` markup from an existing page, mark the matching `.nav-link` as `active`, and reuse `script.js` as-is — it only touches elements that are actually present on the page. The nav is duplicated in every HTML file, so a new link has to be added to all of them, **including `people/profile.html`**; also add the page to `STATIC_PATHS` in `api/sitemap.js` so it's listed in the sitemap. **Every internal `href`/`src` in the `<head>` and `<nav>` is root-absolute** (e.g. `/styles.css`, `/people.html`, not `styles.css`), including in `script.js`'s own `fetch()` calls and dynamically-generated image tags — this is what lets `people/profile.html`, which lives one directory deeper than everything else, share the exact same markup and script as the rest of the site. Keep new pages consistent with that (don't switch back to bare relative paths).
 
 ## 👤 Person profile pages (`/people/<name>`)
 
