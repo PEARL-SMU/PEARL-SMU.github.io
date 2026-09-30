@@ -42,7 +42,7 @@ module.exports = (req, res) => {
     );
     const photoUrl = person.photo
       ? `${site}/${String(person.photo).replace(/^\/+/, '')}`
-      : `${site}/images/logos/favicon/android-chrome-512x512.png`;
+      : `${site}/images/logos2/favicon/android-chrome-512x512.png`;
     const pageUrl = `${site}/people/${slugify(person.name)}`;
 
     const head = `<title>${escapeHtml(pageTitle)}</title>

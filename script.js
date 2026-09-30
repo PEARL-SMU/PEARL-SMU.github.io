@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     /* ── Footer (present on every page) ────────────────────── */
     if ($('footer')) $('footer').innerHTML = `
       <div class="footer-logos">
-        <img class="footer-logo-pips" src="/images/logos/logo/pips-lab-logo-white.svg" alt="PIPS Lab" loading="lazy" />
+        <img class="footer-logo-pips" src="/images/logos2/logo/pips-lab-logo-light.svg" alt="PIPS Lab" loading="lazy" />
         <img class="footer-logo-smu" src="/images/smu-logo-cropped.png" alt="Singapore Management University" loading="lazy" />
       </div>
       <div>© ${new Date().getFullYear()} ${d.lab.fullName} · ${d.lab.affiliation}</div>`;

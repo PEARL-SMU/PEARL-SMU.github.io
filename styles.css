@@ -81,7 +81,7 @@ nav {
   z-index: 100;
   height: var(--nav-h);
   background: var(--chrome-bg);
-  /* Solid brand navy, behind the white wordmark */
+  /* Solid brand navy, behind the light logo */
   border-bottom: 1px solid var(--chrome-line);
   display: flex;
   align-items: center;
@@ -114,9 +114,9 @@ nav a.nav-link.active {
   border-color: var(--chrome-accent);
 }
 
-/* White wordmark, sized by height so it keeps its wide aspect ratio */
+/* Light logo, sized by height so it keeps its aspect ratio */
 #nav-logo {
-  height: 40px;
+  height: 56px;
   width: auto;
   display: block;
 }
@@ -907,7 +907,7 @@ footer a {
 }
 
 .footer-logo-pips {
-  height: 48px;
+  height: 64px;
   width: auto;
   display: block;
 }
