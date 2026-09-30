@@ -81,7 +81,7 @@ nav {
   z-index: 100;
   height: var(--nav-h);
   background: var(--chrome-bg);
-  /* Solid brand navy — matches the logo icon's own background exactly */
+  /* Solid brand navy, behind the white wordmark */
   border-bottom: 1px solid var(--chrome-line);
   display: flex;
   align-items: center;
@@ -114,15 +114,11 @@ nav a.nav-link.active {
   border-color: var(--chrome-accent);
 }
 
+/* White wordmark, sized by height so it keeps its wide aspect ratio */
 #nav-logo {
-  height: 56px;
-  width: 56px;
-  object-fit: contain;
-  border-radius: 12px;
-  /* Matches the app icon's own rounded-square shape */
+  height: 40px;
+  width: auto;
   display: block;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  /* Adds a subtle shadow to separate it from the background */
 }
 
 /* ── Sections ─────────────────────────────────────────── */
@@ -910,10 +906,8 @@ footer a {
 }
 
 .footer-logo-pips {
-  height: 60px;
-  width: 60px;
-  object-fit: contain;
-  border-radius: 13px;
+  height: 48px;
+  width: auto;
   display: block;
 }
 
