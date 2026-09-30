@@ -174,17 +174,14 @@ h2 {
   border-bottom: 1px solid var(--line);
 }
 
-/* Ambient "aurora" background — soft CSS gradients in the logo's own
-   cyan/blue/violet. #home itself is capped at max-width:1100px and centered
+/* Full-bleed cover image behind the hero. #home itself is capped at max-width:1100px and centered
    (the generic `section` rule above), which is fine for the text but much
    narrower than the browser window — so this deliberately escapes that box
    via the left:50%/width:100vw/translateX(-50%) trick to actually span the
    full viewport width, with `body`'s overflow-x:hidden above as a guard
    against the 100vw-vs-scrollbar rounding issue that trick can cause.
-   top:0/bottom:0 ties its height exactly to #home's own height, and the
-   drift below only ever pans the gradient via background-position — the
-   element's box itself never moves or scales — so there is nothing here
-   that can ever clip or bleed into neighboring sections. */
+   top:0/bottom:0 ties its height exactly to #home's own height, so nothing
+   here can ever clip or bleed into neighboring sections. */
 .hero-bg {
   position: absolute;
   top: 0;
@@ -194,22 +191,37 @@ h2 {
   transform: translateX(-50%);
   z-index: 0;
   pointer-events: none;
+  /* Cover photo, left clear so the SMU logo stands out, with a white veil on
+     the right where the hero text sits (the path is relative to this stylesheet). */
   background:
-    radial-gradient(circle at 74% 22%, rgba(34, 211, 238, .20), transparent 42%),
-    radial-gradient(circle at 80% 80%, rgba(124, 58, 237, .18), transparent 42%),
-    radial-gradient(circle at 58% 50%, rgba(63, 91, 224, .14), transparent 38%);
-  background-size: 140% 140%;
-  animation: heroAuroraDrift 30s ease-in-out infinite alternate;
+    linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .1) 36%, rgba(255, 255, 255, .85) 48%, rgba(255, 255, 255, .94) 100%),
+    url('images/cover.png') left center / cover no-repeat;
 }
 
-@keyframes heroAuroraDrift {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 6% 5%; }
+/* On wide screens the hero text moves to the right half, off the logo */
+@media (min-width: 901px) {
+  /* Extra top padding nudges the vertically-centered text down */
+  #home {
+    align-items: flex-end;
+    padding-top: calc(var(--nav-h) + 4rem);
+    padding-bottom: 3rem;
+  }
+  /* The negative margin nudges the text past #home's centered 1100px box,
+     but only by as much spare viewport as there is beside that box */
+  #home > *:not(.hero-bg) {
+    width: 100%;
+    max-width: 540px;
+    margin-right: clamp(-6rem, calc((var(--max) - 100vw) / 2), 0px);
+  }
 }
 
-/* Keep the decoration out of the way once there's no room for it beside the text */
+/* On narrow screens the text spans the full width, so veil the whole photo */
 @media (max-width: 900px) {
-  .hero-bg { display: none; }
+  .hero-bg {
+    background:
+      linear-gradient(rgba(255, 255, 255, .85), rgba(255, 255, 255, .85)),
+      url('images/cover.png') left center / cover no-repeat;
+  }
 }
 
 /* Everything in the hero sits above the background layer */
@@ -228,7 +240,6 @@ h2 {
 .hero-meta.fade-in { transition-delay: .35s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-bg { animation: none; }
   .fade-in {
     transition: none;
     opacity: 1;
@@ -538,12 +549,6 @@ a.theme-card:hover {
 .person-name {
   font-weight: 500;
   font-size: .95rem;
-}
-
-.person-role {
-  font-size: .78rem;
-  color: var(--ink3);
-  margin-top: .2rem;
 }
 
 /* ── Publications ──────────────────────────────────────── */

@@ -136,15 +136,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (location.hash) document.querySelector(location.hash)?.scrollIntoView();
     } // end research-list guard
 
-    /* ── People (current + alumni, each a flat grid, seniority-sorted) ── */
+    /* ── People (current grouped by role, then alumni as a flat grid) ── */
     if ($('people-container')) {
       // Anyone whose role isn't listed here sorts after everyone who is, in JSON order.
       const ROLE_ORDER = [
         'Principal Investigator',
         'Research Scientist',
-        'Research Engineer',
-        'PhD Candidate',
         'PhD Student',
+        'Research Engineer',
         'Masters Student',
         'Visiting Researcher',
       ];
@@ -160,7 +159,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           <img class="person-photo" src="${abs(p.photo)}" alt="${p.name}" loading="lazy" />
           <div class="person-info">
             <div class="person-name">${p.name}</div>
-            <div class="person-role">${p.role}</div>
           </div>
         </a>`;
 
@@ -175,7 +173,14 @@ document.addEventListener('DOMContentLoaded', async () => {
           </div>
         </div>`;
 
-      $('people-container').innerHTML = group('Current', current) + group('Alumni', alumni);
+      // Current members get one group per role, in seniority order (current is already sorted).
+      const roles = [...new Set(current.map(p => p.role))];
+      const roleGroups = roles.map(role => {
+        const members = current.filter(p => p.role === role);
+        return group(members.length > 1 ? `${role}s` : role, members);
+      }).join('');
+
+      $('people-container').innerHTML = roleGroups + group('Alumni', alumni);
     } // end people-container guard
 
     /* ── Person profile page (/people/<name>) ─────────────── */
