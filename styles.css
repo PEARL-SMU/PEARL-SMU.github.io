@@ -432,6 +432,7 @@ a.theme-card:hover {
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--line);
+  filter: grayscale(100%);
 }
 
 .research-pubs {
@@ -530,7 +531,7 @@ a.theme-card:hover {
   aspect-ratio: 1;
   object-fit: cover;
   display: block;
-  filter: grayscale(20%);
+  filter: grayscale(100%);
   transition: filter .3s;
 }
 
@@ -958,6 +959,7 @@ footer a {
   border-radius: 50%;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
   margin: 0 4rem 2rem 0;
+  filter: grayscale(100%);
 }
 
 @media (max-width: 768px) {
