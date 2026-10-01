@@ -548,6 +548,12 @@ a.theme-card:hover {
   font-size: .95rem;
 }
 
+.person-role {
+  margin-top: .2rem;
+  font-size: .8rem;
+  color: var(--ink3);
+}
+
 /* ── Publications ──────────────────────────────────────── */
 
 .pub-filters {

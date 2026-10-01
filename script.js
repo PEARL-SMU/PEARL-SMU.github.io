@@ -154,11 +154,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Array.sort is stable, so people who share a role keep their JSON order.
       const byRole = people => [...people].sort((a, b) => roleRank(a.role) - roleRank(b.role));
 
+      // Alumni share one mixed group, so their tile also shows the role they held.
       const personCard = p => `
         <a class="person-card" href="/people/${slugify(p.name)}" aria-label="View profile of ${p.name}">
           <img class="person-photo" src="${abs(p.photo)}" alt="${p.name}" loading="lazy" />
           <div class="person-info">
             <div class="person-name">${p.name}</div>
+            ${p.isAlumni ? `<div class="person-role">${p.title || p.role}</div>` : ''}
           </div>
         </a>`;
 
