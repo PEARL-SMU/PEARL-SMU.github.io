@@ -927,6 +927,40 @@ footer a {
   border-radius: 8px;
 }
 
+/* ── Home logo scene (scroll-driven draw-in) ─────────────
+   A navy band that scrolls with the page; as it moves into view script.js
+   maps that progress onto each path's stroke-dashoffset (paths use
+   pathLength="1", so 0 = drawn, 1 = hidden). Without the .is-animated
+   class (no JS, reduced motion) the logo is simply shown static. */
+.logo-scene {
+  background: var(--chrome-bg);
+  color: var(--chrome-ink);
+}
+
+.logo-scene-inner {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem clamp(1.5rem, 5vw, 4rem);
+}
+
+.logo-scene-svg {
+  width: min(720px, 100%);
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.logo-scene.is-animated .ls-stroke {
+  stroke-dasharray: 1;
+}
+
+/* The scene sits between sections, so the next one needs its own gap */
+.logo-scene + section {
+  padding-top: 5rem;
+}
+
 /* ── Scroll fade-in animation ──────────────────────────── */
 .fade-in {
   opacity: 0;

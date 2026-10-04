@@ -457,3 +457,61 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error("Failed to load lab data. Are you running a local server?", error);
   }
 });
+/* ── Home logo scene: draw the logo as the user scrolls ──── */
+// Runs independently of the JSON fetch above so the scene works even while
+// (or if) the data is still loading.
+document.addEventListener('DOMContentLoaded', () => {
+  const scene = document.getElementById('logo-scene');
+  if (!scene || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const markPaths = [...scene.querySelectorAll('.logo-scene-mark .ls-stroke')];
+  const wordPaths = [...scene.querySelectorAll('.logo-scene-word .ls-stroke')];
+  const sub = scene.querySelector('.logo-scene-sub');
+  const svg = scene.querySelector('.logo-scene-svg');
+
+  const FINISH_AT = 0.35;
+  const clamp01 = v => Math.min(1, Math.max(0, v));
+  // Progress of `p` through the [start, end] window, eased out
+  const span = (p, start, end) => {
+    const t = clamp01((p - start) / (end - start));
+    return 1 - Math.pow(1 - t, 3);
+  };
+  // Give each path its own slice of the timeline, overlapping its neighbours
+  const stagger = (paths, from, to, overlap) => {
+    const step = (to - from) / (paths.length + overlap - 1);
+    return paths.map((el, i) => ({ el, start: from + i * step, end: from + (i + overlap) * step }));
+  };
+  const tracks = [
+    ...stagger(markPaths, 0.0, 0.4, 1.6), // outer hexagon, then the two inner arches
+    ...stagger(wordPaths, 0.3, 0.8, 2)    // P, I, P, S, then L, A, B strokes
+  ];
+
+  scene.classList.add('is-animated');
+
+  let ticking = false;
+  const render = () => {
+    ticking = false;
+    // 0 when the band's top edge enters the bottom of the viewport,
+    // 1 once the logo's centre has risen to FINISH_AT of the viewport height.
+    // Lower FINISH_AT = more scrolling to complete = slower drawing.
+    const rect = scene.getBoundingClientRect();
+    const svgRect = svg.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const logoCentre = svgRect.top + svgRect.height / 2;
+    const travel = vh + (logoCentre - rect.top) - FINISH_AT * vh;
+    const p = clamp01((vh - rect.top) / travel);
+
+    tracks.forEach(({ el, start, end }) => {
+      el.style.strokeDashoffset = 1 - span(p, start, end);
+    });
+    sub.style.opacity = span(p, 0.78, 0.92);
+    svg.style.transform = `scale(${0.9 + 0.1 * span(p, 0, 0.8)})`;
+  };
+  const onScroll = () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(render); }
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  render();
+});
