@@ -121,6 +121,60 @@ nav a.nav-link.active {
   display: block;
 }
 
+/* ── Mobile nav ───────────────────────────────────────────
+   script.js adds the .nav-toggle button and the .has-toggle class, so
+   without JS the links simply stay inline as on desktop. Below 900px the
+   links fold into a dropdown that opens under the bar (nav.open). */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: 0;
+  color: var(--chrome-ink);
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  nav.has-toggle {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--nav-h);
+    gap: 0 1rem;
+  }
+
+  nav.has-toggle .nav-brand {
+    height: var(--nav-h);
+  }
+
+  nav.has-toggle .nav-toggle {
+    display: flex;
+  }
+
+  nav.has-toggle a.nav-link {
+    display: none;
+  }
+
+  nav.has-toggle.open a.nav-link {
+    display: block;
+    flex-basis: 100%;
+    padding: .85rem .75rem;
+    border-bottom: 0;
+    border-left: 2px solid transparent;
+    border-top: 1px solid var(--chrome-line);
+  }
+
+  nav.has-toggle.open a.nav-link.active {
+    border-left-color: var(--chrome-accent);
+  }
+
+  nav.has-toggle.open a.nav-link:last-child {
+    margin-bottom: .75rem;
+  }
+}
+
 /* ── Sections ─────────────────────────────────────────── */
 section {
   padding: calc(var(--nav-h) + 3rem) clamp(1.5rem, 5vw, 4rem) 5rem;

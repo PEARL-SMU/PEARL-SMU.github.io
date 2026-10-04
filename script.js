@@ -515,3 +515,36 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', onScroll);
   render();
 });
+
+/* ── Mobile nav: hamburger toggle (every page) ───────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  const nav = document.getElementById('main-nav');
+  const brand = nav && nav.querySelector('.nav-brand');
+  if (!brand) return;
+
+  const btn = document.createElement('button');
+  btn.className = 'nav-toggle';
+  btn.type = 'button';
+  btn.setAttribute('aria-label', 'Menu');
+  btn.setAttribute('aria-expanded', 'false');
+  // Inline SVG icons, so the button never depends on the icon font loading
+  const icon = d => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="${d}"/></svg>`;
+  const BARS = icon('M4 7h16M4 12h16M4 17h16');
+  const CLOSE = icon('M6 6l12 12M18 6L6 18');
+  btn.innerHTML = BARS;
+  brand.after(btn);
+  nav.classList.add('has-toggle');
+
+  const setOpen = open => {
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.innerHTML = open ? CLOSE : BARS;
+  };
+
+  btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  nav.querySelectorAll('.nav-link').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', e => e.key === 'Escape' && setOpen(false));
+  // Close when tapping outside the menu or when the window grows past the breakpoint
+  document.addEventListener('click', e => !nav.contains(e.target) && setOpen(false));
+  window.matchMedia('(min-width: 901px)').addEventListener('change', e => e.matches && setOpen(false));
+});
